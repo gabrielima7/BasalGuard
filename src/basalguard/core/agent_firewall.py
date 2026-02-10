@@ -31,6 +31,9 @@ import logging
 from pathlib import Path
 from typing import Any
 
+import httpx
+
+from basalguard.security.network import NetworkSecurityError, validate_url
 from taipanstack.security.guards import (
     SecurityError,
     guard_command_injection,
@@ -62,9 +65,15 @@ DEFAULT_COMMAND_ALLOWLIST: frozenset[str] = frozenset(
 # Maximum file size for reads (1 MiB) — prevents DoS on huge files.
 _MAX_READ_SIZE_BYTES: int = 1_048_576
 
+# Maximum response body to keep in memory (50 KiB).
+_MAX_RESPONSE_BODY: int = 50 * 1024
+
+# HTTP request timeout in seconds.
+_HTTP_TIMEOUT_SECONDS: int = 10
+
 # Actions the firewall understands.
 _VALID_ACTIONS: frozenset[str] = frozenset(
-    {"write_file", "read_file", "execute_command"}
+    {"write_file", "read_file", "execute_command", "web_request"}
 )
 
 
@@ -394,17 +403,114 @@ class BasalGuardCore:
                 }
             return self.safe_read_file(path)
 
-        # action == "execute_command"
-        command_parts = params.get("command_parts")
-        if not isinstance(command_parts, list) or not command_parts:
+        if action == "execute_command":
+            command_parts = params.get("command_parts")
+            if not isinstance(command_parts, list) or not command_parts:
+                return {
+                    "status": "error",
+                    "reason": (
+                        "Action 'execute_command' requires a non-empty "
+                        "'command_parts' list."
+                    ),
+                }
+            return self.safe_execute_command(command_parts)
+
+        # action == "web_request"
+        url = params.get("url")
+        if not isinstance(url, str) or not url:
             return {
                 "status": "error",
                 "reason": (
-                    "Action 'execute_command' requires a non-empty "
-                    "'command_parts' list."
+                    "Action 'web_request' requires a non-empty 'url' string parameter."
                 ),
             }
-        return self.safe_execute_command(command_parts)
+        method = params.get("method", "GET")
+        return self.safe_web_request(url, method=str(method))
+
+    # ── Safe Web Request ─────────────────────────────────────────────
+
+    def safe_web_request(
+        self,
+        url: str,
+        method: str = "GET",
+    ) -> dict[str, Any]:
+        """Make a secure HTTP request after SSRF validation.
+
+        Steps:
+            1. Validate the URL (block private IPs / SSRF).
+            2. Execute the HTTP request with a short timeout.
+            3. Truncate the response body to prevent memory abuse.
+
+        Args:
+            url: The target URL to request.
+            method: HTTP method (GET, POST, etc.).  Defaults to GET.
+
+        Returns:
+            A dict with ``"status"`` equal to ``"success"`` or
+            ``"blocked"``, plus ``"content"`` on success.
+
+        """
+        method = method.upper()
+        if method not in {"GET", "HEAD"}:
+            return {
+                "status": "blocked",
+                "action": "web_request",
+                "reason": (
+                    f"HTTP method '{method}' not allowed. "
+                    "Only GET and HEAD are permitted."
+                ),
+                "violator": method,
+            }
+
+        try:
+            validated = validate_url(url)
+        except NetworkSecurityError as exc:
+            logger.warning("BLOCKED web_request — %s", exc)
+            return {
+                "status": "blocked",
+                "action": "web_request",
+                "reason": str(exc),
+                "violator": url,
+            }
+
+        try:
+            with httpx.Client(
+                timeout=_HTTP_TIMEOUT_SECONDS,
+                follow_redirects=True,
+                max_redirects=5,
+            ) as client:
+                response = client.request(method, validated)
+
+            body = response.text[:_MAX_RESPONSE_BODY]
+            logger.info(
+                "web_request %s %s → %d (%d bytes)",
+                method,
+                validated,
+                response.status_code,
+                len(body),
+            )
+            return {
+                "status": "success",
+                "action": "web_request",
+                "url": validated,
+                "method": method,
+                "status_code": response.status_code,
+                "content": body,
+            }
+        except httpx.TimeoutException:
+            return {
+                "status": "error",
+                "action": "web_request",
+                "reason": f"Request timed out after {_HTTP_TIMEOUT_SECONDS}s",
+                "violator": url,
+            }
+        except httpx.HTTPError as exc:
+            return {
+                "status": "error",
+                "action": "web_request",
+                "reason": f"HTTP error: {exc}",
+                "violator": url,
+            }
 
     # ── Utility: project-name validation (bonus) ─────────────────────
 

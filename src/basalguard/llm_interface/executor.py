@@ -35,6 +35,7 @@ _TOOL_TO_ACTION: dict[str, str] = {
     "write_file": "write_file",
     "read_file": "read_file",
     "run_command": "execute_command",
+    "web_request": "web_request",
 }
 
 

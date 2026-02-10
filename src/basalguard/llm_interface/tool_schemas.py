@@ -137,11 +137,54 @@ RUN_COMMAND_SCHEMA: dict[str, Any] = {
     },
 }
 
+# ── Tool: web_request ────────────────────────────────────────────────
+
+WEB_REQUEST_SCHEMA: dict[str, Any] = {
+    "type": "function",
+    "function": {
+        "name": "web_request",
+        "description": (
+            "Make a secure HTTP request to an external URL. "
+            "The URL is validated against SSRF attacks — requests to "
+            "private/internal IPs (127.0.0.1, 192.168.x.x, 10.x.x.x, "
+            "etc.) are BLOCKED by the Network Guard.\n\n"
+            "WHEN TO USE: When you need to fetch content from a public "
+            "website, read an API response, or check if a URL is "
+            "reachable. Only GET and HEAD methods are allowed.\n\n"
+            "IMPORTANT: This tool only allows access to public internet "
+            "endpoints. Any attempt to access internal network resources "
+            "will be blocked."
+        ),
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "url": {
+                    "type": "string",
+                    "description": (
+                        "The full URL to request, e.g. 'https://example.com' "
+                        "or 'https://api.github.com/repos/user/repo'."
+                    ),
+                },
+                "method": {
+                    "type": "string",
+                    "enum": ["GET", "HEAD"],
+                    "description": (
+                        "HTTP method. Defaults to GET. Only GET and HEAD are permitted."
+                    ),
+                },
+            },
+            "required": ["url"],
+            "additionalProperties": False,
+        },
+    },
+}
+
 # ── Exported list ────────────────────────────────────────────────────
 
 BASALGUARD_TOOLS: list[dict[str, Any]] = [
     WRITE_FILE_SCHEMA,
     READ_FILE_SCHEMA,
     RUN_COMMAND_SCHEMA,
+    WEB_REQUEST_SCHEMA,
 ]
 """All BasalGuard tool schemas, ready for ``tools=`` in an API call."""
