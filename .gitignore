@@ -3,6 +3,7 @@ __pycache__/
 .venv/
 .env
 *.log
+logs/
 safe_workspace/
 .DS_Store
 .idea/

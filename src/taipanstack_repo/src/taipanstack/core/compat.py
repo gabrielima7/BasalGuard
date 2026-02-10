@@ -14,8 +14,18 @@ import logging
 import os
 import sys
 from dataclasses import dataclass
-from enum import StrEnum
 from typing import TYPE_CHECKING
+
+try:
+    from enum import StrEnum
+except ImportError:
+    from enum import Enum
+
+    class StrEnum(str, Enum):  # noqa: UP042
+        """Backport of StrEnum for Python < 3.11."""
+
+        def __str__(self) -> str:
+            return str(self.value)
 
 if TYPE_CHECKING:
     from typing import Final
