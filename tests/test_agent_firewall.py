@@ -63,7 +63,7 @@ class TestWorkspaceCreation:
         """__repr__ includes workspace path and allowlist size."""
         r = repr(firewall)
         assert "BasalGuardCore" in r
-        assert str(firewall.workspace_root) in r
+        assert repr(firewall.workspace_root) in r
 
 
 # ── safe_write_file ──────────────────────────────────────────────────
