@@ -1,0 +1,31 @@
+[tool.poetry]
+name = "basalguard"
+version = "0.1.0"
+description = "A Deterministic Security Firewall for AI Agents"
+authors = ["Gabriel Lima <gabrielima.alu.lmb@gmail.com>"]
+readme = "README.md"
+packages = [{include = "basalguard", from = "src"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+openai = "^1.0.0"
+google-generativeai = "^0.3.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.0.0"
+pytest-cov = "^4.1.0"
+ruff = "^0.1.0"
+mypy = "^1.0.0"
+bandit = "^1.7.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+line-length = 88
+target-version = "py310"
+
+[tool.mypy]
+strict = true
+ignore_missing_imports = true
