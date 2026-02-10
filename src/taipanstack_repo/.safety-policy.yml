@@ -1,0 +1,23 @@
+# Safety Policy Configuration
+# This file configures the Safety vulnerability scanner
+
+security:
+  ignore-cvss-severity-below: 4.0
+  ignore-cvss-unknown-severity: false
+
+scan:
+  exclude:
+    - path: tests/
+    - path: docs/
+  ignore:
+    # py 1.11.0 - CVE-2022-42969 (DISPUTED)
+    # This is a transitive dependency from pytest
+    # The vulnerability is disputed and not confirmed exploitable
+    - 51457
+
+announcements:
+  enabled: true
+
+report:
+  dependency-vulnerabilities:
+    enabled: true

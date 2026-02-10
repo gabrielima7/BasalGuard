@@ -1,0 +1,35 @@
+version: 2
+updates:
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 10
+    groups:
+      production-dependencies:
+        patterns:
+          - "pydantic*"
+          - "structlog"
+          - "python-dotenv"
+          - "packaging"
+      dev-dependencies:
+        patterns:
+          - "ruff"
+          - "mypy"
+          - "bandit"
+          - "safety"
+          - "pytest*"
+          - "pre-commit"
+          - "semgrep"
+          - "py-spy"
+          - "coverage*"
+          - "types-*"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    groups:
+      actions:
+        patterns:
+          - "*"

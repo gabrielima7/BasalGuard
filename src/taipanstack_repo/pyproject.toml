@@ -1,0 +1,205 @@
+[project]
+name = "taipanstack"
+version = "0.2.6"
+description = "TaipanStack - Modular, secure, and scalable Python stack for robust development"
+authors = [
+    {name = "gabrielima7", email = "gabrielima.alu.lmb@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.11,<4.0"
+license = {text = "MIT"}
+keywords = ["security", "devops", "python", "taipanstack", "bootstrapper", "quality"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Software Development :: Quality Assurance",
+    "Topic :: Security",
+    "Typing :: Typed",
+]
+dependencies = [
+    "pydantic (>=2.0)",
+    "pydantic-settings (>=2.0.0)",
+    "orjson (>=3.9.0)",
+    "email-validator (>=2.0.0)",
+    "result (>=0.17.0)",
+]
+
+[project.urls]
+Homepage = "https://github.com/gabrielima7/TaipanStack"
+Documentation = "https://github.com/gabrielima7/TaipanStack#readme"
+Repository = "https://github.com/gabrielima7/TaipanStack"
+Changelog = "https://github.com/gabrielima7/TaipanStack/blob/main/CHANGELOG.md"
+Issues = "https://github.com/gabrielima7/TaipanStack/issues"
+
+
+[project.optional-dependencies]
+runtime = [
+    "uvloop (>=0.19.0); sys_platform != 'win32'",
+    "structlog (>=23.0.0)",
+]
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[dependency-groups]
+dev = [
+    "ruff (>=0.8.0)",
+    "mypy (>=1.10.0)",
+    "bandit (>=1.7.0)",
+    "safety (>=3.0.0)",
+    "pre-commit (>=3.7.0)",
+    "pytest (>=8.0.0)",
+    "pytest-cov (>=5.0.0)",
+    "pytest-timeout (>=2.3.0)",
+    "pytest-xdist (>=3.6.0)",
+    "vulture (>=2.11)",
+    "interrogate (>=1.5.0)",
+    "hypothesis (>=6.100.0)",
+    "polyfactory (>=2.0.0)",
+    "structlog (>=25.5.0,<26.0.0)",
+    "import-linter (>=2.1)",
+    "gitingest (>=0.1.0)",
+]
+
+
+
+# --- TaipanStack v2.0 Quality Configuration ---
+[tool.ruff]
+line-length = 88
+target-version = "py311"
+src = ["src"]
+
+[tool.ruff.lint]
+select = [
+    "F",    # Pyflakes
+    "E",    # pycodestyle errors
+    "W",    # pycodestyle warnings
+    "I",    # isort
+    "N",    # pep8-naming
+    "D",    # pydocstyle
+    "Q",    # flake8-quotes
+    "S",    # flake8-bandit
+    "B",    # flake8-bugbear
+    "A",    # flake8-builtins
+    "C4",   # flake8-comprehensions
+    "T20",  # flake8-print
+    "SIM",  # flake8-simplify
+    "PTH",  # flake8-use-pathlib
+    "TID",  # flake8-tidy-imports
+    "ARG",  # flake8-unused-arguments
+    "PIE",  # flake8-pie
+    "PLC",  # Pylint Convention
+    "PLE",  # Pylint Error
+    "PLR",  # Pylint Refactor
+    "PLW",  # Pylint Warning
+    "RUF",  # Ruff-specific
+    "UP",   # pyupgrade
+    "ERA",  # eradicate
+    "TRY",  # tryceratops
+]
+ignore = ["D203", "D212", "D213", "D416", "D417", "B905", "TRY003"]
+
+[tool.ruff.lint.mccabe]
+max-complexity = 10
+
+[tool.ruff.lint.per-file-ignores]
+# Tests: allow asserts, skip docs, magic values, unused args, long lines, shadowing builtins
+"tests/**/*.py" = ["S101", "D", "PLR2004", "ARG001", "ARG002", "SIM117", "RUF043", "PLC0415", "E501", "A004", "TRY301", "UP024"]
+# TaipanStack bootstrapper: allow print, long lines, complex branches, docstring style, unused args
+"taipanstack_bootstrapper.py" = ["T201", "E501", "PLR0912", "TRY300", "S603", "D205", "ARG001"]
+# Utils: allow too many args, subprocess, random for jitter
+"src/taipanstack/utils/*.py" = ["PLR0913", "S603", "TRY300", "S311", "TRY400"]
+# Config generators: allow long lines in generated content
+"src/taipanstack/config/generators.py" = ["E501"]
+# Sanitizers: allow many branches for complex validation logic
+"src/taipanstack/security/sanitizers.py" = ["PLR0912"]
+# Decorators: allow inline imports for lazy loading, unused signal args, D401 imperative mood
+"src/taipanstack/security/decorators.py" = ["PLC0415", "ARG001", "D401"]
+# Circuit breaker and metrics: allow D401 for decorator docstrings
+"src/taipanstack/utils/circuit_breaker.py" = ["D401"]
+"src/taipanstack/utils/metrics.py" = ["D401"]
+# Core result: allow D401 for utility function docstrings
+"src/taipanstack/core/result.py" = ["D401"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_any_unimported = false
+no_implicit_optional = true
+check_untyped_defs = true
+strict_optional = true
+strict_equality = true
+ignore_missing_imports = true
+show_error_codes = true
+enable_error_code = ["ignore-without-code", "redundant-cast", "truthy-bool"]
+plugins = ["pydantic.mypy"]
+
+[tool.pydantic-mypy]
+init_forbid_extra = true
+init_typed = true
+warn_required_dynamic_aliases = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-v --cov=src --cov-report=html --cov-report=term-missing --strict-markers --timeout=30"
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "security: marks tests as security-related",
+    "integration: marks tests as integration tests",
+]
+filterwarnings = [
+    "ignore::DeprecationWarning",
+    "ignore::ResourceWarning",
+    "ignore::pytest.PytestUnraisableExceptionWarning",
+]
+
+[tool.coverage.run]
+branch = true
+source = ["src"]
+omit = ["*/tests/*", "*/__pycache__/*", "*/conftest.py"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise NotImplementedError",
+    "if TYPE_CHECKING:",
+    "if __name__ == .__main__.:",
+    "@abstractmethod",
+]
+fail_under = 80
+show_missing = true
+
+[tool.bandit]
+exclude_dirs = ["tests", ".venv", "venv"]
+skips = ["B101"]
+
+[tool.vulture]
+min_confidence = 80
+paths = ["src"]
+exclude = ["tests"]
+
+[tool.interrogate]
+ignore-init-module = true
+ignore-private = true
+ignore-semiprivate = true
+fail-under = 80
+verbose = 1
+
+[tool.mutmut]
+paths_to_mutate = "src/"
+tests_dir = "tests/"
+runner = "python -m pytest -x -q --tb=no --timeout=10"
