@@ -89,33 +89,28 @@ class TestSafeWriteFile:
         assert result["status"] == "success"
         assert Path(result["path"]).read_text(encoding="utf-8") == "# Notes"
 
-    def test_blocks_path_traversal_dotdot(
-        self, firewall: BasalGuardCore
-    ) -> None:
+    def test_blocks_path_traversal_dotdot(self, firewall: BasalGuardCore) -> None:
         """Path with '..' is blocked."""
         result = firewall.safe_write_file("../../etc/passwd", "pwned")
         assert result["status"] == "blocked"
-        assert "path_traversal" in result["reason"].lower() or "traversal" in result["reason"].lower()
+        assert (
+            "path_traversal" in result["reason"].lower()
+            or "traversal" in result["reason"].lower()
+        )
 
-    def test_blocks_path_traversal_encoded(
-        self, firewall: BasalGuardCore
-    ) -> None:
+    def test_blocks_path_traversal_encoded(self, firewall: BasalGuardCore) -> None:
         """URL-encoded '..' is also caught."""
         result = firewall.safe_write_file("%2e%2e/secret.key", "pwned")
         assert result["status"] == "blocked"
 
-    def test_blocks_tilde_expansion(
-        self, firewall: BasalGuardCore
-    ) -> None:
+    def test_blocks_tilde_expansion(self, firewall: BasalGuardCore) -> None:
         """Tilde (~) path is treated as traversal attempt."""
         result = firewall.safe_write_file("~/evil.sh", "rm -rf /")
         assert result["status"] == "blocked"
 
-    def test_sanitises_dangerous_filename(
-        self, firewall: BasalGuardCore
-    ) -> None:
+    def test_sanitises_dangerous_filename(self, firewall: BasalGuardCore) -> None:
         """Dangerous characters in filename are sanitised, not rejected."""
-        result = firewall.safe_write_file('bad<>:name.txt', "safe content")
+        result = firewall.safe_write_file("bad<>:name.txt", "safe content")
         assert result["status"] == "success"
         # The written path should NOT contain the dangerous chars
         written_name = Path(result["path"]).name
@@ -130,54 +125,43 @@ class TestSafeWriteFile:
 class TestSafeExecuteCommand:
     """Tests for the safe_execute_command method."""
 
-    def test_allowed_command_succeeds(
-        self, firewall: BasalGuardCore
-    ) -> None:
+    def test_allowed_command_succeeds(self, firewall: BasalGuardCore) -> None:
         """An allowlisted command (ls) executes successfully."""
         result = firewall.safe_execute_command(["ls"])
         assert result["status"] == "success"
         assert result["returncode"] == 0
 
-    def test_blocks_disallowed_command(
-        self, firewall: BasalGuardCore
-    ) -> None:
+    def test_blocks_disallowed_command(self, firewall: BasalGuardCore) -> None:
         """A command not in the allowlist is blocked."""
         result = firewall.safe_execute_command(["curl", "http://evil.com"])
         assert result["status"] == "blocked"
         assert "curl" in result["violator"]
 
-    def test_blocks_command_injection_semicolon(
-        self, firewall: BasalGuardCore
-    ) -> None:
+    def test_blocks_command_injection_semicolon(self, firewall: BasalGuardCore) -> None:
         """Shell metacharacter (;) in arguments is blocked."""
         result = firewall.safe_execute_command(["ls", "; rm -rf /"])
         assert result["status"] == "blocked"
-        assert "command_injection" in result["reason"].lower() or "dangerous" in result["reason"].lower()
+        assert (
+            "command_injection" in result["reason"].lower()
+            or "dangerous" in result["reason"].lower()
+        )
 
-    def test_blocks_command_injection_pipe(
-        self, firewall: BasalGuardCore
-    ) -> None:
+    def test_blocks_command_injection_pipe(self, firewall: BasalGuardCore) -> None:
         """Pipe (|) in arguments is blocked."""
         result = firewall.safe_execute_command(["echo", "hi | cat /etc/shadow"])
         assert result["status"] == "blocked"
 
-    def test_blocks_command_injection_backtick(
-        self, firewall: BasalGuardCore
-    ) -> None:
+    def test_blocks_command_injection_backtick(self, firewall: BasalGuardCore) -> None:
         """Backtick command substitution is blocked."""
         result = firewall.safe_execute_command(["echo", "`whoami`"])
         assert result["status"] == "blocked"
 
-    def test_blocks_empty_command(
-        self, firewall: BasalGuardCore
-    ) -> None:
+    def test_blocks_empty_command(self, firewall: BasalGuardCore) -> None:
         """An empty command list is blocked."""
         result = firewall.safe_execute_command([])
         assert result["status"] == "blocked"
 
-    def test_echo_command(
-        self, firewall: BasalGuardCore
-    ) -> None:
+    def test_echo_command(self, firewall: BasalGuardCore) -> None:
         """echo is in the default allowlist and works."""
         result = firewall.safe_execute_command(["echo", "hello from basalguard"])
         assert result["status"] == "success"
@@ -199,9 +183,7 @@ class TestValidateIntent:
         assert result["status"] == "success"
         assert result["action"] == "write_file"
 
-    def test_routes_execute_command(
-        self, firewall: BasalGuardCore
-    ) -> None:
+    def test_routes_execute_command(self, firewall: BasalGuardCore) -> None:
         """'execute_command' action is dispatched to safe_execute_command."""
         result = firewall.validate_intent(
             "execute_command",
@@ -218,17 +200,13 @@ class TestValidateIntent:
 
     def test_missing_path_param(self, firewall: BasalGuardCore) -> None:
         """'write_file' without 'path' returns an error."""
-        result = firewall.validate_intent(
-            "write_file", {"content": "no path"}
-        )
+        result = firewall.validate_intent("write_file", {"content": "no path"})
         assert result["status"] == "error"
         assert "path" in result["reason"].lower()
 
     def test_missing_content_param(self, firewall: BasalGuardCore) -> None:
         """'write_file' without 'content' returns an error."""
-        result = firewall.validate_intent(
-            "write_file", {"path": "test.txt"}
-        )
+        result = firewall.validate_intent("write_file", {"path": "test.txt"})
         assert result["status"] == "error"
 
     def test_missing_command_parts(self, firewall: BasalGuardCore) -> None:
@@ -238,9 +216,7 @@ class TestValidateIntent:
 
     def test_empty_command_parts(self, firewall: BasalGuardCore) -> None:
         """'execute_command' with empty list returns an error."""
-        result = firewall.validate_intent(
-            "execute_command", {"command_parts": []}
-        )
+        result = firewall.validate_intent("execute_command", {"command_parts": []})
         assert result["status"] == "error"
 
     def test_traversal_via_intent(self, firewall: BasalGuardCore) -> None:

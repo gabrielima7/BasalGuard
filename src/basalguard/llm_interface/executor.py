@@ -143,29 +143,27 @@ class ToolExecutor:
             # Parse arguments (the LLM sends them as a JSON string).
             try:
                 arguments = (
-                    json.loads(raw_args)
-                    if isinstance(raw_args, str)
-                    else raw_args
+                    json.loads(raw_args) if isinstance(raw_args, str) else raw_args
                 )
             except json.JSONDecodeError:
                 arguments = {}
 
             output = self.execute_tool_call(name, arguments)
 
-            results.append({
-                "role": "tool",
-                "tool_call_id": call_id,
-                "content": output,
-            })
+            results.append(
+                {
+                    "role": "tool",
+                    "tool_call_id": call_id,
+                    "content": output,
+                }
+            )
 
         return results
 
     # ── Internals ────────────────────────────────────────────────────
 
     @staticmethod
-    def _translate_params(
-        action: str, arguments: dict[str, Any]
-    ) -> dict[str, Any]:
+    def _translate_params(action: str, arguments: dict[str, Any]) -> dict[str, Any]:
         """Normalise LLM arguments to BasalGuard's internal format.
 
         The LLM schema uses ``command_parts`` for run_command, which

@@ -27,6 +27,7 @@ except ImportError:
         def __str__(self) -> str:
             return str(self.value)
 
+
 if TYPE_CHECKING:
     from typing import Final
 

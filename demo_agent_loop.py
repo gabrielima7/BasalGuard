@@ -22,7 +22,7 @@ from typing import Any
 _ROOT = Path(__file__).resolve().parent
 for _p in (
     _ROOT / "src" / "taipanstack_repo" / "src",  # TaipanStack
-    _ROOT / "src",                                 # BasalGuard
+    _ROOT / "src",  # BasalGuard
 ):
     if str(_p) not in sys.path:
         sys.path.insert(0, str(_p))
@@ -32,17 +32,18 @@ from basalguard.core.agent_firewall import BasalGuardCore  # noqa: E402
 
 # ── ANSI colour helpers (stdlib only) ────────────────────────────────
 
+
 class _C:
     """Minimal ANSI colour support — gracefully degrades on dumb terms."""
 
-    RESET  = "\033[0m"
-    BOLD   = "\033[1m"
-    DIM    = "\033[2m"
-    RED    = "\033[91m"
-    GREEN  = "\033[92m"
+    RESET = "\033[0m"
+    BOLD = "\033[1m"
+    DIM = "\033[2m"
+    RED = "\033[91m"
+    GREEN = "\033[92m"
     YELLOW = "\033[93m"
-    CYAN   = "\033[96m"
-    WHITE  = "\033[97m"
+    CYAN = "\033[96m"
+    WHITE = "\033[97m"
     BG_RED = "\033[41m"
     BG_GRN = "\033[42m"
 
@@ -113,6 +114,7 @@ def _print_scenario(
 
 
 # ── Main demo loop ──────────────────────────────────────────────────
+
 
 def main() -> None:
     """Run the demo scenarios."""

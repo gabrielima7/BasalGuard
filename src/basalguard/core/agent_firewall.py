@@ -114,9 +114,7 @@ class BasalGuardCore:
 
         # Create workspace safely (exist_ok avoids race conditions).
         self.workspace_root.mkdir(parents=True, exist_ok=True)
-        logger.info(
-            "BasalGuard initialised — workspace: %s", self.workspace_root
-        )
+        logger.info("BasalGuard initialised — workspace: %s", self.workspace_root)
 
     # ── Safe File Write ──────────────────────────────────────────────
 
@@ -169,9 +167,7 @@ class BasalGuardCore:
             }
 
         except SecurityError as exc:
-            logger.warning(
-                "BLOCKED write_file — %s (value=%s)", exc, exc.value
-            )
+            logger.warning("BLOCKED write_file — %s (value=%s)", exc, exc.value)
             return {
                 "status": "blocked",
                 "action": "write_file",
@@ -253,9 +249,7 @@ class BasalGuardCore:
             }
 
         except SecurityError as exc:
-            logger.warning(
-                "BLOCKED read_file — %s (value=%s)", exc, exc.value
-            )
+            logger.warning("BLOCKED read_file — %s (value=%s)", exc, exc.value)
             return {
                 "status": "blocked",
                 "action": "read_file",
@@ -324,9 +318,7 @@ class BasalGuardCore:
             }
 
         except SecurityError as exc:
-            logger.warning(
-                "BLOCKED execute_command — %s (value=%s)", exc, exc.value
-            )
+            logger.warning("BLOCKED execute_command — %s (value=%s)", exc, exc.value)
             return {
                 "status": "blocked",
                 "action": "execute_command",
@@ -397,8 +389,7 @@ class BasalGuardCore:
                 return {
                     "status": "error",
                     "reason": (
-                        "Action 'read_file' requires a string 'path' "
-                        "parameter."
+                        "Action 'read_file' requires a string 'path' parameter."
                     ),
                 }
             return self.safe_read_file(path)

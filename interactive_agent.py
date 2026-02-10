@@ -48,35 +48,45 @@ CYAN = "\033[96m"
 RESET = "\033[0m"
 DIM = "\033[2m"
 
+
 def _get_input(prompt: str, default: str | None = None, is_secret: bool = False) -> str:
     """Helper for user input with defaults."""
     default_str = f" [{default}]" if default else ""
     value = input(f"{prompt}{DIM}{default_str}{RESET}: ").strip()
     return value if value else (default or "")
 
+
 def main():
-    print(f"{BLUE}╔══════════════════════════════════════════════════════════════╗{RESET}")
+    print(
+        f"{BLUE}╔══════════════════════════════════════════════════════════════╗{RESET}"
+    )
     print(f"{BLUE}║    🛡️  BasalGuard — Universal Agent Firewall               ║{RESET}")
-    print(f"{BLUE}║        Secure AI Execution Environment                     ║{RESET}")
-    print(f"{BLUE}╚══════════════════════════════════════════════════════════════╝{RESET}")
+    print(
+        f"{BLUE}║        Secure AI Execution Environment                     ║{RESET}"
+    )
+    print(
+        f"{BLUE}╚══════════════════════════════════════════════════════════════╝{RESET}"
+    )
 
     # 1. Configuração do Provedor (Agnóstico)
     print(f"\n{CYAN}⚙️  Configuração do Provedor de IA{RESET}")
-    
+
     # Base URL
     default_base_url = os.environ.get("OPENAI_BASE_URL", "https://api.openai.com/v1")
     # Sugestões comuns
     print(f"{DIM}   Exemplos: https://api.groq.com/openai/v1{RESET}")
     print(f"{DIM}             https://openrouter.ai/api/v1{RESET}")
     print(f"{DIM}             http://localhost:11434/v1 (Ollama){RESET}")
-    
+
     base_url = _get_input("Base URL", default_base_url)
 
     # API Key
     env_key = os.environ.get("OPENAI_API_KEY") or os.environ.get("GROQ_API_KEY")
     api_key = _get_input("API Key", env_key, is_secret=True)
     if not api_key:
-        print(f"{YELLOW}⚠️  Aviso: Nenhuma API Key fornecida (pode falhar se o provedor exigir auth).{RESET}")
+        print(
+            f"{YELLOW}⚠️  Aviso: Nenhuma API Key fornecida (pode falhar se o provedor exigir auth).{RESET}"
+        )
 
     # Model Name
     default_model = os.environ.get("OPENAI_MODEL", "gpt-3.5-turbo")
@@ -127,8 +137,9 @@ def main():
             if user_input.lower() in ["sair", "exit", "quit"]:
                 print("👋 Encerrando.")
                 break
-            
-            if not user_input.strip(): continue
+
+            if not user_input.strip():
+                continue
 
             messages.append({"role": "user", "content": user_input})
 
@@ -138,51 +149,58 @@ def main():
                 messages=messages,
                 tools=BASALGUARD_TOOLS,
                 tool_choice="auto",
-                temperature=0.1
+                temperature=0.1,
             )
 
             msg = response.choices[0].message
-            
+
             # Se a IA decidiu usar ferramentas
             if msg.tool_calls:
-                messages.append(msg) # Adiciona a intenção da IA ao histórico
+                messages.append(msg)  # Adiciona a intenção da IA ao histórico
 
                 for tool_call in msg.tool_calls:
                     print(f"{YELLOW}🤖 IA solicitou: {tool_call.function.name}{RESET}")
-                    
+
                     # Executa através do BasalGuard
                     tool_name = tool_call.function.name
                     raw_args = tool_call.function.arguments
                     try:
                         args = json.loads(raw_args)
-                        
+
                         # EXECUÇÃO SEGURA 🛡️
                         result = executor.execute_tool_call(tool_name, args)
-                        
+
                         # Verifica se foi bloqueado
-                        if "status" in result and "\"blocked\"" in result: # Simple string check for JSON
-                             print(f"{RED}🛡️  BASALGUARD BLOQUEOU: {result}{RESET}")
+                        if (
+                            "status" in result and '"blocked"' in result
+                        ):  # Simple string check for JSON
+                            print(f"{RED}🛡️  BASALGUARD BLOQUEOU: {result}{RESET}")
                         else:
-                             # Truncate long output for display
-                             display_result = result[:200] + "..." if len(result) > 200 else result
-                             print(f"{GREEN}✅ BasalGuard permitiu: {display_result}{RESET}")
+                            # Truncate long output for display
+                            display_result = (
+                                result[:200] + "..." if len(result) > 200 else result
+                            )
+                            print(
+                                f"{GREEN}✅ BasalGuard permitiu: {display_result}{RESET}"
+                            )
 
                     except Exception as e:
                         result = f"Erro na execução da tool: {str(e)}"
                         print(f"{RED}❌ Erro interno: {result}{RESET}")
 
                     # Adiciona o resultado ao histórico
-                    messages.append({
-                        "tool_call_id": tool_call.id,
-                        "role": "tool",
-                        "name": tool_name,
-                        "content": result
-                    })
+                    messages.append(
+                        {
+                            "tool_call_id": tool_call.id,
+                            "role": "tool",
+                            "name": tool_name,
+                            "content": result,
+                        }
+                    )
 
                 # Segunda chamada: IA processa o resultado e responde ao usuário
                 final_response = client.chat.completions.create(
-                    model=model_name,
-                    messages=messages
+                    model=model_name, messages=messages
                 )
                 final_answer = final_response.choices[0].message.content
                 print(f"\n{BLUE}🤖 IA:{RESET} {final_answer}\n")
@@ -198,6 +216,7 @@ def main():
             break
         except Exception as e:
             print(f"{RED}❌ Erro: {e}{RESET}")
+
 
 if __name__ == "__main__":
     main()

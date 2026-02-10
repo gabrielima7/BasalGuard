@@ -89,8 +89,7 @@ READ_FILE_SCHEMA: dict[str, Any] = {
                 "path": {
                     "type": "string",
                     "description": (
-                        "Relative path of the file to read, "
-                        "e.g. 'src/main.py'."
+                        "Relative path of the file to read, e.g. 'src/main.py'."
                     ),
                 },
             },

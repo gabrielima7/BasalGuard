@@ -41,17 +41,18 @@ from basalguard.llm_interface.tool_schemas import BASALGUARD_TOOLS  # noqa: E402
 
 # ── ANSI helpers ─────────────────────────────────────────────────────
 
+
 class _C:
-    RESET  = "\033[0m"
-    BOLD   = "\033[1m"
-    DIM    = "\033[2m"
-    RED    = "\033[91m"
-    GREEN  = "\033[92m"
+    RESET = "\033[0m"
+    BOLD = "\033[1m"
+    DIM = "\033[2m"
+    RED = "\033[91m"
+    GREEN = "\033[92m"
     YELLOW = "\033[93m"
-    BLUE   = "\033[94m"
+    BLUE = "\033[94m"
     MAGENTA = "\033[95m"
-    CYAN   = "\033[96m"
-    WHITE  = "\033[97m"
+    CYAN = "\033[96m"
+    WHITE = "\033[97m"
     BG_BLU = "\033[44m"
     BG_GRN = "\033[42m"
     BG_MAG = "\033[45m"
@@ -61,6 +62,7 @@ class _C:
         for attr in list(vars(cls)):
             if attr.isupper():
                 setattr(cls, attr, "")
+
 
 if not sys.stdout.isatty():
     _C.disable()
@@ -97,6 +99,7 @@ def _print_tool_call(name: str, args: dict[str, Any]) -> None:
 
 # ── Mock LLM ────────────────────────────────────────────────────────
 
+
 class MockLLM:
     """Simulates LLM responses with pre-scripted tool calls.
 
@@ -107,9 +110,7 @@ class MockLLM:
     def __init__(self) -> None:
         self._step = 0
 
-    def get_response(
-        self, messages: list[dict[str, Any]]
-    ) -> dict[str, Any]:
+    def get_response(self, messages: list[dict[str, Any]]) -> dict[str, Any]:
         """Return the next scripted response.
 
         Returns:
@@ -129,20 +130,22 @@ class MockLLM:
                         "type": "function",
                         "function": {
                             "name": "write_file",
-                            "arguments": json.dumps({
-                                "path": "main.py",
-                                "content": (
-                                    '"""Ponto de entrada do projeto."""\n\n'
-                                    "\n"
-                                    "def main() -> None:\n"
-                                    '    """Função principal."""\n'
-                                    '    print("Olá Mundo! 🌍")\n'
-                                    "\n"
-                                    "\n"
-                                    'if __name__ == "__main__":\n'
-                                    "    main()\n"
-                                ),
-                            }),
+                            "arguments": json.dumps(
+                                {
+                                    "path": "main.py",
+                                    "content": (
+                                        '"""Ponto de entrada do projeto."""\n\n'
+                                        "\n"
+                                        "def main() -> None:\n"
+                                        '    """Função principal."""\n'
+                                        '    print("Olá Mundo! 🌍")\n'
+                                        "\n"
+                                        "\n"
+                                        'if __name__ == "__main__":\n'
+                                        "    main()\n"
+                                    ),
+                                }
+                            ),
                         },
                     }
                 ],
@@ -176,9 +179,11 @@ class MockLLM:
                         "type": "function",
                         "function": {
                             "name": "run_command",
-                            "arguments": json.dumps({
-                                "command_parts": ["python3", "main.py"],
-                            }),
+                            "arguments": json.dumps(
+                                {
+                                    "command_parts": ["python3", "main.py"],
+                                }
+                            ),
                         },
                     }
                 ],
@@ -198,6 +203,7 @@ class MockLLM:
 
 # ── Agent Loop ───────────────────────────────────────────────────────
 
+
 def main() -> None:
     """Run the simulated agent loop."""
     print(f"""
@@ -214,7 +220,9 @@ def main() -> None:
     llm = MockLLM()
 
     print(f"  ⚙️  Workspace:  {_C.BOLD}{firewall.workspace_root}{_C.RESET}")
-    print(f"  ⚙️  Tools:      {_C.DIM}{[t['function']['name'] for t in BASALGUARD_TOOLS]}{_C.RESET}")
+    print(
+        f"  ⚙️  Tools:      {_C.DIM}{[t['function']['name'] for t in BASALGUARD_TOOLS]}{_C.RESET}"
+    )
     print(f"  ⚙️  Allowlist:  {_C.DIM}{sorted(firewall.command_allowlist)}{_C.RESET}")
 
     # ── Conversation ────────────────────────────────────────────────
@@ -278,11 +286,13 @@ def main() -> None:
                 print(f"    {_C.DIM}{line}{_C.RESET}")
 
             # Append tool result to conversation
-            messages.append({
-                "role": "tool",
-                "tool_call_id": call["id"],
-                "content": output,
-            })
+            messages.append(
+                {
+                    "role": "tool",
+                    "tool_call_id": call["id"],
+                    "content": output,
+                }
+            )
 
     # ── Summary ──────────────────────────────────────────────────────
     print(f"\n{_C.BOLD}{_C.WHITE}{'═' * 62}{_C.RESET}")
@@ -294,9 +304,7 @@ def main() -> None:
     # Show the file was actually created
     created = workspace / "main.py"
     if created.exists():
-        print(
-            f"\n  📁 Arquivo criado: {_C.GREEN}{created}{_C.RESET}"
-        )
+        print(f"\n  📁 Arquivo criado: {_C.GREEN}{created}{_C.RESET}")
         print(f"  {_C.DIM}{'─' * 56}{_C.RESET}")
         for line in created.read_text(encoding="utf-8").split("\n"):
             print(f"    {_C.DIM}{line}{_C.RESET}")
