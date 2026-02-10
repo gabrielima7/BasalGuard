@@ -12,14 +12,11 @@ Covers:
 
 from __future__ import annotations
 
-import os
 from pathlib import Path
-from unittest.mock import patch
 
 import pytest
 
 from basalguard.core.agent_firewall import (
-    DEFAULT_COMMAND_ALLOWLIST,
     BasalGuardCore,
 )
 

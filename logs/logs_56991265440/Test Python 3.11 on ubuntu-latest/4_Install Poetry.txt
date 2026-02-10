@@ -1,0 +1,17 @@
+﻿2026-02-10T17:28:12.0967618Z ##[group]Run pipx install poetry
+2026-02-10T17:28:12.0969007Z [36;1mpipx install poetry[0m
+2026-02-10T17:28:12.1016105Z shell: /usr/bin/bash -e {0}
+2026-02-10T17:28:12.1017289Z env:
+2026-02-10T17:28:12.1018454Z   pythonLocation: /opt/hostedtoolcache/Python/3.11.14/x64
+2026-02-10T17:28:12.1020475Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.11.14/x64/lib/pkgconfig
+2026-02-10T17:28:12.1022463Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.14/x64
+2026-02-10T17:28:12.1024219Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.14/x64
+2026-02-10T17:28:12.1026177Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.14/x64
+2026-02-10T17:28:12.1027970Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.11.14/x64/lib
+2026-02-10T17:28:12.1029468Z ##[endgroup]
+2026-02-10T17:28:12.4196538Z creating virtual environment...
+2026-02-10T17:28:12.5602481Z installing poetry...
+2026-02-10T17:28:20.7226763Z done! ✨ 🌟 ✨
+2026-02-10T17:28:20.7227756Z   installed package poetry 2.3.2, installed using Python 3.12.3
+2026-02-10T17:28:20.7228566Z   These apps are now globally available
+2026-02-10T17:28:20.7229060Z     - poetry

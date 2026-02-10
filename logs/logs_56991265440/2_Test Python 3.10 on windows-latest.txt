@@ -1,0 +1,247 @@
+﻿2026-02-10T17:28:14.0183986Z Current runner version: '2.331.0'
+2026-02-10T17:28:14.0567128Z ##[group]Runner Image Provisioner
+2026-02-10T17:28:14.0567976Z Hosted Compute Agent
+2026-02-10T17:28:14.0568511Z Version: 20260123.484
+2026-02-10T17:28:14.0569139Z Commit: 6bd6555ca37d84114959e1c76d2c01448ff61c5d
+2026-02-10T17:28:14.0569848Z Build Date: 2026-01-23T19:41:17Z
+2026-02-10T17:28:14.0570478Z Worker ID: {564f05a9-fd1d-404a-a61e-de7d97db2c63}
+2026-02-10T17:28:14.0571207Z Azure Region: northcentralus
+2026-02-10T17:28:14.0571755Z ##[endgroup]
+2026-02-10T17:28:14.0573915Z ##[group]Operating System
+2026-02-10T17:28:14.0574581Z Microsoft Windows Server 2025
+2026-02-10T17:28:14.0575165Z 10.0.26100
+2026-02-10T17:28:14.0575576Z Datacenter
+2026-02-10T17:28:14.0576064Z ##[endgroup]
+2026-02-10T17:28:14.0576550Z ##[group]Runner Image
+2026-02-10T17:28:14.0577022Z Image: windows-2025
+2026-02-10T17:28:14.0577541Z Version: 20260202.17.1
+2026-02-10T17:28:14.0579059Z Included Software: https://github.com/actions/runner-images/blob/win25/20260202.17/images/windows/Windows2025-Readme.md
+2026-02-10T17:28:14.0580563Z Image Release: https://github.com/actions/runner-images/releases/tag/win25%2F20260202.17
+2026-02-10T17:28:14.0581477Z ##[endgroup]
+2026-02-10T17:28:14.0582668Z ##[group]GITHUB_TOKEN Permissions
+2026-02-10T17:28:14.0584580Z Contents: read
+2026-02-10T17:28:14.0585065Z Metadata: read
+2026-02-10T17:28:14.0585587Z Packages: read
+2026-02-10T17:28:14.0586005Z ##[endgroup]
+2026-02-10T17:28:14.0588116Z Secret source: Actions
+2026-02-10T17:28:14.0588857Z Prepare workflow directory
+2026-02-10T17:28:14.1881775Z Prepare all required actions
+2026-02-10T17:28:14.1922426Z Getting action download info
+2026-02-10T17:28:14.5625556Z Download action repository 'actions/checkout@v4' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)
+2026-02-10T17:28:14.7722755Z Download action repository 'actions/setup-python@v5' (SHA:a26af69be951a213d495a4c3e4e4022e16d87065)
+2026-02-10T17:28:15.7881897Z Complete job name: Test Python 3.10 on windows-latest
+2026-02-10T17:28:16.8169847Z ##[group]Run actions/checkout@v4
+2026-02-10T17:28:16.8171098Z with:
+2026-02-10T17:28:16.8171726Z   repository: gabrielima7/BasalGuard
+2026-02-10T17:28:16.8173070Z   token: ***
+2026-02-10T17:28:16.8173684Z   ssh-strict: true
+2026-02-10T17:28:16.8174292Z   ssh-user: git
+2026-02-10T17:28:16.8174917Z   persist-credentials: true
+2026-02-10T17:28:16.8175604Z   clean: true
+2026-02-10T17:28:16.8176244Z   sparse-checkout-cone-mode: true
+2026-02-10T17:28:16.8177009Z   fetch-depth: 1
+2026-02-10T17:28:16.8177831Z   fetch-tags: false
+2026-02-10T17:28:16.8178468Z   show-progress: true
+2026-02-10T17:28:16.8179097Z   lfs: false
+2026-02-10T17:28:16.8179697Z   submodules: false
+2026-02-10T17:28:16.8180342Z   set-safe-directory: true
+2026-02-10T17:28:16.8181289Z ##[endgroup]
+2026-02-10T17:28:17.1046040Z Syncing repository: gabrielima7/BasalGuard
+2026-02-10T17:28:17.1049184Z ##[group]Getting Git version info
+2026-02-10T17:28:17.1050527Z Working directory is 'D:\a\BasalGuard\BasalGuard'
+2026-02-10T17:28:17.2202454Z [command]"C:\Program Files\Git\bin\git.exe" version
+2026-02-10T17:28:17.6452148Z git version 2.53.0.windows.1
+2026-02-10T17:28:17.6518342Z ##[endgroup]
+2026-02-10T17:28:17.6570676Z Temporarily overriding HOME='D:\a\_temp\d9f32ab1-a569-4915-badc-12cfc25e7840' before making global git config changes
+2026-02-10T17:28:17.6571914Z Adding repository directory to the temporary git global config as a safe directory
+2026-02-10T17:28:17.6573109Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\BasalGuard\BasalGuard
+2026-02-10T17:28:17.7222226Z Deleting the contents of 'D:\a\BasalGuard\BasalGuard'
+2026-02-10T17:28:17.7230619Z ##[group]Initializing the repository
+2026-02-10T17:28:17.7244870Z [command]"C:\Program Files\Git\bin\git.exe" init D:\a\BasalGuard\BasalGuard
+2026-02-10T17:28:17.8556506Z Initialized empty Git repository in D:/a/BasalGuard/BasalGuard/.git/
+2026-02-10T17:28:17.8625861Z [command]"C:\Program Files\Git\bin\git.exe" remote add origin https://github.com/gabrielima7/BasalGuard
+2026-02-10T17:28:17.9264832Z ##[endgroup]
+2026-02-10T17:28:17.9265709Z ##[group]Disabling automatic garbage collection
+2026-02-10T17:28:17.9276456Z [command]"C:\Program Files\Git\bin\git.exe" config --local gc.auto 0
+2026-02-10T17:28:17.9611723Z ##[endgroup]
+2026-02-10T17:28:17.9612228Z ##[group]Setting up auth
+2026-02-10T17:28:17.9630832Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+2026-02-10T17:28:17.9970358Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+2026-02-10T17:28:19.5082190Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-02-10T17:28:19.5419178Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+2026-02-10T17:28:20.1312722Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-02-10T17:28:20.1634338Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "git config --local --show-origin --name-only --get-regexp remote.origin.url"
+2026-02-10T17:28:20.7176718Z [command]"C:\Program Files\Git\bin\git.exe" config --local http.https://github.com/.extraheader "AUTHORIZATION: basic ***"
+2026-02-10T17:28:20.7517276Z ##[endgroup]
+2026-02-10T17:28:20.7517927Z ##[group]Fetching the repository
+2026-02-10T17:28:20.7532572Z [command]"C:\Program Files\Git\bin\git.exe" -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +adc2f215813a0c775243ca501085c28bdb02651f:refs/remotes/origin/main
+2026-02-10T17:28:21.6971613Z From https://github.com/gabrielima7/BasalGuard
+2026-02-10T17:28:21.6972714Z  * [new ref]         adc2f215813a0c775243ca501085c28bdb02651f -> origin/main
+2026-02-10T17:28:21.7369776Z ##[endgroup]
+2026-02-10T17:28:21.7370310Z ##[group]Determining the checkout info
+2026-02-10T17:28:21.7373710Z ##[endgroup]
+2026-02-10T17:28:21.7384852Z [command]"C:\Program Files\Git\bin\git.exe" sparse-checkout disable
+2026-02-10T17:28:21.8079621Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset-all extensions.worktreeConfig
+2026-02-10T17:28:21.8414077Z ##[group]Checking out the ref
+2026-02-10T17:28:21.8425269Z [command]"C:\Program Files\Git\bin\git.exe" checkout --progress --force -B main refs/remotes/origin/main
+2026-02-10T17:28:21.9651148Z Switched to a new branch 'main'
+2026-02-10T17:28:21.9711037Z branch 'main' set up to track 'origin/main'.
+2026-02-10T17:28:21.9762652Z ##[endgroup]
+2026-02-10T17:28:22.0360757Z [command]"C:\Program Files\Git\bin\git.exe" log -1 --format=%H
+2026-02-10T17:28:22.0640761Z adc2f215813a0c775243ca501085c28bdb02651f
+2026-02-10T17:28:22.1073748Z ##[group]Run actions/setup-python@v5
+2026-02-10T17:28:22.1074088Z with:
+2026-02-10T17:28:22.1074257Z   python-version: 3.10
+2026-02-10T17:28:22.1074466Z   check-latest: false
+2026-02-10T17:28:22.1074770Z   token: ***
+2026-02-10T17:28:22.1074945Z   update-environment: true
+2026-02-10T17:28:22.1075162Z   allow-prereleases: false
+2026-02-10T17:28:22.1075374Z   freethreaded: false
+2026-02-10T17:28:22.1075579Z ##[endgroup]
+2026-02-10T17:28:22.3315280Z ##[group]Installed versions
+2026-02-10T17:28:22.3702507Z Successfully set up CPython (3.10.11)
+2026-02-10T17:28:22.3703001Z ##[endgroup]
+2026-02-10T17:28:22.3981025Z ##[group]Run pipx install poetry
+2026-02-10T17:28:22.3981386Z [36;1mpipx install poetry[0m
+2026-02-10T17:28:22.7044558Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2026-02-10T17:28:22.7045044Z env:
+2026-02-10T17:28:22.7045393Z   pythonLocation: C:\hostedtoolcache\windows\Python\3.10.11\x64
+2026-02-10T17:28:22.7046024Z   PKG_CONFIG_PATH: C:\hostedtoolcache\windows\Python\3.10.11\x64/lib/pkgconfig
+2026-02-10T17:28:22.7048079Z   Python_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.10.11\x64
+2026-02-10T17:28:22.7048623Z   Python2_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.10.11\x64
+2026-02-10T17:28:22.7049175Z   Python3_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.10.11\x64
+2026-02-10T17:28:22.7049600Z ##[endgroup]
+2026-02-10T17:28:31.6407985Z Found a space in the pipx home path. We heavily discourage this, due to
+2026-02-10T17:28:31.6408925Z     multiple incompatibilities. Please check our docs for more information on
+2026-02-10T17:28:31.6409940Z     this, as well as some pointers on how to migrate to a different home path.
+2026-02-10T17:28:32.4168240Z creating virtual environment...
+2026-02-10T17:28:32.6809627Z installing poetry...
+2026-02-10T17:28:51.5807782Z done! 
+2026-02-10T17:28:51.5811351Z   installed package poetry 2.3.2, installed using Python 3.12.10
+2026-02-10T17:28:51.5811930Z   These apps are now globally available
+2026-02-10T17:28:51.5812365Z     - poetry.exe
+2026-02-10T17:28:52.3181739Z ##[group]Run poetry install
+2026-02-10T17:28:52.3182337Z [36;1mpoetry install[0m
+2026-02-10T17:28:52.3249354Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2026-02-10T17:28:52.3249679Z env:
+2026-02-10T17:28:52.3249927Z   pythonLocation: C:\hostedtoolcache\windows\Python\3.10.11\x64
+2026-02-10T17:28:52.3250368Z   PKG_CONFIG_PATH: C:\hostedtoolcache\windows\Python\3.10.11\x64/lib/pkgconfig
+2026-02-10T17:28:52.3250804Z   Python_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.10.11\x64
+2026-02-10T17:28:52.3251192Z   Python2_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.10.11\x64
+2026-02-10T17:28:52.3251573Z   Python3_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.10.11\x64
+2026-02-10T17:28:52.3251868Z ##[endgroup]
+2026-02-10T17:28:54.8505480Z Creating virtualenv basalguard-ycvLmXEg-py3.10 in C:\Users\runneradmin\AppData\Local\pypoetry\Cache\virtualenvs
+2026-02-10T17:28:59.8172770Z Updating dependencies
+2026-02-10T17:28:59.8174429Z Resolving dependencies...
+2026-02-10T17:29:08.6598336Z 
+2026-02-10T17:29:08.6601521Z Package operations: 55 installs, 0 updates, 0 removals
+2026-02-10T17:29:08.6602041Z 
+2026-02-10T17:29:08.6608523Z   - Installing pycparser (3.0)
+2026-02-10T17:29:08.9782284Z   - Installing cffi (2.0.0)
+2026-02-10T17:29:08.9784871Z   - Installing protobuf (4.25.8)
+2026-02-10T17:29:08.9788818Z   - Installing pyasn1 (0.6.2)
+2026-02-10T17:29:08.9805213Z   - Installing typing-extensions (4.15.0)
+2026-02-10T17:29:09.7313404Z   - Installing certifi (2026.1.4)
+2026-02-10T17:29:09.7317872Z   - Installing charset-normalizer (3.4.4)
+2026-02-10T17:29:09.7324205Z   - Installing googleapis-common-protos (1.72.0)
+2026-02-10T17:29:09.7332950Z   - Installing grpcio (1.78.0)
+2026-02-10T17:29:09.7336493Z   - Installing idna (3.11)
+2026-02-10T17:29:09.7352636Z   - Installing pyasn1-modules (0.4.2)
+2026-02-10T17:29:09.7357123Z   - Installing rsa (4.9.1)
+2026-02-10T17:29:09.7425762Z   - Installing cryptography (46.0.4)
+2026-02-10T17:29:09.8417798Z   - Installing urllib3 (2.6.3)
+2026-02-10T17:29:10.9858306Z   - Installing exceptiongroup (1.3.1)
+2026-02-10T17:29:10.9861528Z   - Installing google-auth (2.48.0)
+2026-02-10T17:29:10.9868674Z   - Installing grpcio-status (1.62.3)
+2026-02-10T17:29:10.9872110Z   - Installing mdurl (0.1.2)
+2026-02-10T17:29:10.9877823Z   - Installing h11 (0.16.0)
+2026-02-10T17:29:10.9888479Z   - Installing proto-plus (1.27.1)
+2026-02-10T17:29:10.9892908Z   - Installing requests (2.32.5)
+2026-02-10T17:29:11.1634819Z   - Installing annotated-types (0.7.0)
+2026-02-10T17:29:11.1637394Z   - Installing anyio (4.12.1)
+2026-02-10T17:29:11.1643281Z   - Installing colorama (0.4.6)
+2026-02-10T17:29:11.1651168Z   - Installing httpcore (1.0.9)
+2026-02-10T17:29:11.1658676Z   - Installing iniconfig (2.3.0)
+2026-02-10T17:29:11.1675095Z   - Installing google-api-core (2.29.0)
+2026-02-10T17:29:11.1693145Z   - Installing markdown-it-py (4.0.0)
+2026-02-10T17:29:11.1698363Z   - Installing packaging (26.0)
+2026-02-10T17:29:11.5018404Z   - Installing pluggy (1.6.0)
+2026-02-10T17:29:11.5340089Z   - Installing pydantic-core (2.41.5)
+2026-02-10T17:29:11.5724328Z   - Installing pygments (2.19.2)
+2026-02-10T17:29:11.5981109Z   - Installing tomli (2.4.0)
+2026-02-10T17:29:11.6086781Z   - Installing typing-inspection (0.4.2)
+2026-02-10T17:29:12.1297761Z   - Installing coverage (7.13.4)
+2026-02-10T17:29:12.1300939Z   - Installing distro (1.9.0)
+2026-02-10T17:29:12.1307105Z   - Installing google-ai-generativelanguage (0.4.0)
+2026-02-10T17:29:12.1315407Z   - Installing jiter (0.13.0)
+2026-02-10T17:29:12.1321646Z   - Installing librt (0.7.8)
+2026-02-10T17:29:12.1327159Z   - Installing pathspec (1.0.4)
+2026-02-10T17:29:12.1336145Z   - Installing mypy-extensions (1.1.0)
+2026-02-10T17:29:12.1354311Z   - Installing httpx (0.28.1)
+2026-02-10T17:29:12.2321279Z   - Installing pydantic (2.12.5)
+2026-02-10T17:29:12.2754224Z   - Installing pytest (8.4.2)
+2026-02-10T17:29:12.2836659Z   - Installing pyyaml (6.0.3)
+2026-02-10T17:29:12.2948131Z   - Installing rich (14.3.2)
+2026-02-10T17:29:12.3786614Z   - Installing sniffio (1.3.1)
+2026-02-10T17:29:12.3883681Z   - Installing stevedore (5.6.0)
+2026-02-10T17:29:12.4773670Z   - Installing tqdm (4.67.3)
+2026-02-10T17:29:13.3134478Z   - Installing bandit (1.9.3)
+2026-02-10T17:29:13.3137756Z   - Installing google-generativeai (0.3.2)
+2026-02-10T17:29:13.3144537Z   - Installing mypy (1.19.1)
+2026-02-10T17:29:13.3150310Z   - Installing pytest-cov (4.1.0)
+2026-02-10T17:29:13.3158184Z   - Installing ruff (0.1.15)
+2026-02-10T17:29:13.3167872Z   - Installing openai (1.109.1)
+2026-02-10T17:29:16.5246771Z 
+2026-02-10T17:29:16.5247151Z Writing lock file
+2026-02-10T17:29:16.5261139Z 
+2026-02-10T17:29:16.5262207Z Installing the current project: basalguard (0.1.0)
+2026-02-10T17:29:16.8848645Z ##[group]Run poetry run pytest tests/ -v
+2026-02-10T17:29:16.8849020Z [36;1mpoetry run pytest tests/ -v[0m
+2026-02-10T17:29:16.8917450Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2026-02-10T17:29:16.8917809Z env:
+2026-02-10T17:29:16.8918085Z   pythonLocation: C:\hostedtoolcache\windows\Python\3.10.11\x64
+2026-02-10T17:29:16.8918563Z   PKG_CONFIG_PATH: C:\hostedtoolcache\windows\Python\3.10.11\x64/lib/pkgconfig
+2026-02-10T17:29:16.8919019Z   Python_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.10.11\x64
+2026-02-10T17:29:16.8919430Z   Python2_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.10.11\x64
+2026-02-10T17:29:16.8919834Z   Python3_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.10.11\x64
+2026-02-10T17:29:16.8920148Z ##[endgroup]
+2026-02-10T17:29:19.5650890Z ============================= test session starts =============================
+2026-02-10T17:29:19.5652092Z platform win32 -- Python 3.10.11, pytest-8.4.2, pluggy-1.6.0 -- C:\Users\runneradmin\AppData\Local\pypoetry\Cache\virtualenvs\basalguard-ycvLmXEg-py3.10\Scripts\python.exe
+2026-02-10T17:29:19.5652848Z cachedir: .pytest_cache
+2026-02-10T17:29:19.5653082Z rootdir: D:\a\BasalGuard\BasalGuard
+2026-02-10T17:29:19.5653349Z configfile: pyproject.toml
+2026-02-10T17:29:19.5653613Z plugins: anyio-4.12.1, cov-4.1.0
+2026-02-10T17:29:19.8105345Z collecting ... collected 0 items / 1 error
+2026-02-10T17:29:19.8105972Z 
+2026-02-10T17:29:19.8106216Z =================================== ERRORS ====================================
+2026-02-10T17:29:19.8106912Z ________________ ERROR collecting tests/test_agent_firewall.py ________________
+2026-02-10T17:29:19.8107802Z ImportError while importing test module 'D:\a\BasalGuard\BasalGuard\tests\test_agent_firewall.py'.
+2026-02-10T17:29:19.8108625Z Hint: make sure your test modules/packages have valid Python names.
+2026-02-10T17:29:19.8109172Z Traceback:
+2026-02-10T17:29:19.8109745Z C:\hostedtoolcache\windows\Python\3.10.11\x64\lib\importlib\__init__.py:126: in import_module
+2026-02-10T17:29:19.8110446Z     return _bootstrap._gcd_import(name[level:], package, level)
+2026-02-10T17:29:19.8110828Z tests\test_agent_firewall.py:21: in <module>
+2026-02-10T17:29:19.8111461Z     from basalguard.core.agent_firewall import (
+2026-02-10T17:29:19.8111807Z src\basalguard\core\agent_firewall.py:34: in <module>
+2026-02-10T17:29:19.8112142Z     from taipanstack.security.guards import (
+2026-02-10T17:29:19.8112483Z E   ModuleNotFoundError: No module named 'taipanstack'
+2026-02-10T17:29:19.8112834Z =========================== short test summary info ===========================
+2026-02-10T17:29:19.8113164Z ERROR tests/test_agent_firewall.py
+2026-02-10T17:29:19.8113489Z !!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!
+2026-02-10T17:29:19.8113846Z ============================== 1 error in 0.22s ===============================
+2026-02-10T17:29:20.0353774Z ##[error]Process completed with exit code 1.
+2026-02-10T17:29:20.0562317Z Post job cleanup.
+2026-02-10T17:29:20.3004533Z [command]"C:\Program Files\Git\bin\git.exe" version
+2026-02-10T17:29:20.3307578Z git version 2.53.0.windows.1
+2026-02-10T17:29:20.3387125Z Temporarily overriding HOME='D:\a\_temp\d58d8058-e00b-49ee-a92e-f1e995354163' before making global git config changes
+2026-02-10T17:29:20.3387924Z Adding repository directory to the temporary git global config as a safe directory
+2026-02-10T17:29:20.3399214Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\BasalGuard\BasalGuard
+2026-02-10T17:29:20.3718547Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+2026-02-10T17:29:20.4011503Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+2026-02-10T17:29:20.9728510Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-02-10T17:29:21.0000679Z http.https://github.com/.extraheader
+2026-02-10T17:29:21.0045674Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset-all http.https://github.com/.extraheader
+2026-02-10T17:29:21.0339771Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+2026-02-10T17:29:21.5655995Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-02-10T17:29:21.5951124Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "git config --local --show-origin --name-only --get-regexp remote.origin.url"
+2026-02-10T17:29:22.1385379Z Cleaning up orphan processes

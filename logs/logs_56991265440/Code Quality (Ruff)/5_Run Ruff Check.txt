@@ -1,0 +1,49 @@
+﻿2026-02-10T17:28:14.5180728Z ##[group]Run ruff check src/ tests/
+2026-02-10T17:28:14.5181081Z [36;1mruff check src/ tests/[0m
+2026-02-10T17:28:14.5214942Z shell: /usr/bin/bash -e {0}
+2026-02-10T17:28:14.5215179Z env:
+2026-02-10T17:28:14.5215421Z   pythonLocation: /opt/hostedtoolcache/Python/3.11.14/x64
+2026-02-10T17:28:14.5215835Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.11.14/x64/lib/pkgconfig
+2026-02-10T17:28:14.5216296Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.14/x64
+2026-02-10T17:28:14.5216651Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.14/x64
+2026-02-10T17:28:14.5217014Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.14/x64
+2026-02-10T17:28:14.5217381Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.11.14/x64/lib
+2026-02-10T17:28:14.5217676Z ##[endgroup]
+2026-02-10T17:28:14.5528014Z F401 [*] `os` imported but unused
+2026-02-10T17:28:14.5528813Z   --> tests/test_agent_firewall.py:15:8
+2026-02-10T17:28:14.5529258Z    |
+2026-02-10T17:28:14.5529581Z 13 | from __future__ import annotations
+2026-02-10T17:28:14.5530083Z 14 |
+2026-02-10T17:28:14.5530368Z 15 | import os
+2026-02-10T17:28:14.5530692Z    |        ^^
+2026-02-10T17:28:14.5531025Z 16 | from pathlib import Path
+2026-02-10T17:28:14.5531435Z 17 | from unittest.mock import patch
+2026-02-10T17:28:14.5531861Z    |
+2026-02-10T17:28:14.5532163Z help: Remove unused import: `os`
+2026-02-10T17:28:14.5532484Z 
+2026-02-10T17:28:14.5532723Z F401 [*] `unittest.mock.patch` imported but unused
+2026-02-10T17:28:14.5533195Z   --> tests/test_agent_firewall.py:17:27
+2026-02-10T17:28:14.5533445Z    |
+2026-02-10T17:28:14.5533604Z 15 | import os
+2026-02-10T17:28:14.5533799Z 16 | from pathlib import Path
+2026-02-10T17:28:14.5534040Z 17 | from unittest.mock import patch
+2026-02-10T17:28:14.5534276Z    |                           ^^^^^
+2026-02-10T17:28:14.5534665Z 18 |
+2026-02-10T17:28:14.5534855Z 19 | import pytest
+2026-02-10T17:28:14.5535025Z    |
+2026-02-10T17:28:14.5535235Z help: Remove unused import: `unittest.mock.patch`
+2026-02-10T17:28:14.5535442Z 
+2026-02-10T17:28:14.5535719Z F401 [*] `basalguard.core.agent_firewall.DEFAULT_COMMAND_ALLOWLIST` imported but unused
+2026-02-10T17:28:14.5536160Z   --> tests/test_agent_firewall.py:22:5
+2026-02-10T17:28:14.5536392Z    |
+2026-02-10T17:28:14.5536599Z 21 | from basalguard.core.agent_firewall import (
+2026-02-10T17:28:14.5536881Z 22 |     DEFAULT_COMMAND_ALLOWLIST,
+2026-02-10T17:28:14.5537112Z    |     ^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-02-10T17:28:14.5537668Z 23 |     BasalGuardCore,
+2026-02-10T17:28:14.5537858Z 24 | )
+2026-02-10T17:28:14.5538105Z    |
+2026-02-10T17:28:14.5538782Z help: Remove unused import: `basalguard.core.agent_firewall.DEFAULT_COMMAND_ALLOWLIST`
+2026-02-10T17:28:14.5539382Z 
+2026-02-10T17:28:14.5539502Z Found 3 errors.
+2026-02-10T17:28:14.5539831Z [*] 3 fixable with the `--fix` option.
+2026-02-10T17:28:14.5552495Z ##[error]Process completed with exit code 1.

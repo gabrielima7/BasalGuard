@@ -1,0 +1,35 @@
+﻿2026-02-10T17:29:02.4186130Z ##[group]Run poetry run pytest tests/ -v
+2026-02-10T17:29:02.4187140Z [36;1mpoetry run pytest tests/ -v[0m
+2026-02-10T17:29:02.4256520Z shell: /bin/bash -e {0}
+2026-02-10T17:29:02.4256800Z env:
+2026-02-10T17:29:02.4257120Z   pythonLocation: /Users/runner/hostedtoolcache/Python/3.10.11/arm64
+2026-02-10T17:29:02.4257660Z   PKG_CONFIG_PATH: /Users/runner/hostedtoolcache/Python/3.10.11/arm64/lib/pkgconfig
+2026-02-10T17:29:02.4258150Z   Python_ROOT_DIR: /Users/runner/hostedtoolcache/Python/3.10.11/arm64
+2026-02-10T17:29:02.4258700Z   Python2_ROOT_DIR: /Users/runner/hostedtoolcache/Python/3.10.11/arm64
+2026-02-10T17:29:02.4259220Z   Python3_ROOT_DIR: /Users/runner/hostedtoolcache/Python/3.10.11/arm64
+2026-02-10T17:29:02.4259560Z ##[endgroup]
+2026-02-10T17:29:03.6812060Z ============================= test session starts ==============================
+2026-02-10T17:29:03.6822510Z platform darwin -- Python 3.10.11, pytest-8.4.2, pluggy-1.6.0 -- /Users/runner/Library/Caches/pypoetry/virtualenvs/basalguard-80myX1_h-py3.10/bin/python
+2026-02-10T17:29:03.6823370Z cachedir: .pytest_cache
+2026-02-10T17:29:03.6823690Z rootdir: /Users/runner/work/BasalGuard/BasalGuard
+2026-02-10T17:29:03.6823940Z configfile: pyproject.toml
+2026-02-10T17:29:03.6824220Z plugins: anyio-4.12.1, cov-4.1.0
+2026-02-10T17:29:03.8146030Z collecting ... collected 0 items / 1 error
+2026-02-10T17:29:03.8146560Z 
+2026-02-10T17:29:03.8147150Z ==================================== ERRORS ====================================
+2026-02-10T17:29:03.8148160Z ________________ ERROR collecting tests/test_agent_firewall.py _________________
+2026-02-10T17:29:03.8149470Z ImportError while importing test module '/Users/runner/work/BasalGuard/BasalGuard/tests/test_agent_firewall.py'.
+2026-02-10T17:29:03.8150750Z Hint: make sure your test modules/packages have valid Python names.
+2026-02-10T17:29:03.8151690Z Traceback:
+2026-02-10T17:29:03.8152570Z /Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/importlib/__init__.py:126: in import_module
+2026-02-10T17:29:03.8153920Z     return _bootstrap._gcd_import(name[level:], package, level)
+2026-02-10T17:29:03.8154890Z tests/test_agent_firewall.py:21: in <module>
+2026-02-10T17:29:03.8155630Z     from basalguard.core.agent_firewall import (
+2026-02-10T17:29:03.8156440Z src/basalguard/core/agent_firewall.py:34: in <module>
+2026-02-10T17:29:03.8157220Z     from taipanstack.security.guards import (
+2026-02-10T17:29:03.8158120Z E   ModuleNotFoundError: No module named 'taipanstack'
+2026-02-10T17:29:03.8158990Z =========================== short test summary info ============================
+2026-02-10T17:29:03.8159790Z ERROR tests/test_agent_firewall.py
+2026-02-10T17:29:03.8160820Z !!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!
+2026-02-10T17:29:03.8163120Z =============================== 1 error in 0.10s ===============================
+2026-02-10T17:29:03.8527310Z ##[error]Process completed with exit code 2.

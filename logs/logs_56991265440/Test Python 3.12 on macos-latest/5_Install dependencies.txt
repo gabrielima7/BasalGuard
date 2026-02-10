@@ -1,0 +1,72 @@
+﻿2026-02-10T17:28:23.2960100Z ##[group]Run poetry install
+2026-02-10T17:28:23.2960420Z [36;1mpoetry install[0m
+2026-02-10T17:28:23.3029320Z shell: /bin/bash -e {0}
+2026-02-10T17:28:23.3029810Z env:
+2026-02-10T17:28:23.3030240Z   pythonLocation: /Users/runner/hostedtoolcache/Python/3.12.10/arm64
+2026-02-10T17:28:23.3030820Z   PKG_CONFIG_PATH: /Users/runner/hostedtoolcache/Python/3.12.10/arm64/lib/pkgconfig
+2026-02-10T17:28:23.3031510Z   Python_ROOT_DIR: /Users/runner/hostedtoolcache/Python/3.12.10/arm64
+2026-02-10T17:28:23.3031990Z   Python2_ROOT_DIR: /Users/runner/hostedtoolcache/Python/3.12.10/arm64
+2026-02-10T17:28:23.3032810Z   Python3_ROOT_DIR: /Users/runner/hostedtoolcache/Python/3.12.10/arm64
+2026-02-10T17:28:23.3033220Z ##[endgroup]
+2026-02-10T17:28:24.1371140Z Creating virtualenv basalguard-80myX1_h-py3.12 in /Users/runner/Library/Caches/pypoetry/virtualenvs
+2026-02-10T17:28:24.8014310Z Updating dependencies
+2026-02-10T17:28:24.8015960Z Resolving dependencies...
+2026-02-10T17:28:29.3064590Z 
+2026-02-10T17:28:29.3083610Z Package operations: 52 installs, 0 updates, 0 removals
+2026-02-10T17:28:29.3138000Z 
+2026-02-10T17:28:29.3139480Z   - Installing pycparser (3.0)
+2026-02-10T17:28:29.7758220Z   - Installing protobuf (4.25.8)
+2026-02-10T17:28:29.7871910Z   - Installing cffi (2.0.0)
+2026-02-10T17:28:29.7879880Z   - Installing pyasn1 (0.6.2)
+2026-02-10T17:28:29.8016320Z   - Installing typing-extensions (4.15.0)
+2026-02-10T17:28:29.8920850Z   - Installing certifi (2026.1.4)
+2026-02-10T17:28:29.9017350Z   - Installing googleapis-common-protos (1.72.0)
+2026-02-10T17:28:29.9119040Z   - Installing grpcio (1.78.0)
+2026-02-10T17:28:29.9150140Z   - Installing charset-normalizer (3.4.4)
+2026-02-10T17:28:29.9233580Z   - Installing cryptography (46.0.4)
+2026-02-10T17:28:29.9233940Z   - Installing idna (3.11)
+2026-02-10T17:28:29.9779390Z   - Installing pyasn1-modules (0.4.2)
+2026-02-10T17:28:29.9780380Z   - Installing rsa (4.9.1)
+2026-02-10T17:28:30.0280710Z   - Installing urllib3 (2.6.3)
+2026-02-10T17:28:30.7088270Z   - Installing grpcio-status (1.62.3)
+2026-02-10T17:28:30.7096420Z   - Installing h11 (0.16.0)
+2026-02-10T17:28:30.7136830Z   - Installing proto-plus (1.27.1)
+2026-02-10T17:28:30.7170310Z   - Installing requests (2.32.5)
+2026-02-10T17:28:30.7249370Z   - Installing google-auth (2.48.0)
+2026-02-10T17:28:30.7304360Z   - Installing mdurl (0.1.2)
+2026-02-10T17:28:30.8383120Z   - Installing annotated-types (0.7.0)
+2026-02-10T17:28:30.8496890Z   - Installing anyio (4.12.1)
+2026-02-10T17:28:30.8599680Z   - Installing google-api-core (2.29.0)
+2026-02-10T17:28:30.8623200Z   - Installing httpcore (1.0.9)
+2026-02-10T17:28:30.8623750Z   - Installing iniconfig (2.3.0)
+2026-02-10T17:28:30.8624280Z   - Installing markdown-it-py (4.0.0)
+2026-02-10T17:28:30.8638640Z   - Installing packaging (26.0)
+2026-02-10T17:28:30.9233500Z   - Installing pluggy (1.6.0)
+2026-02-10T17:28:30.9334630Z   - Installing pydantic-core (2.41.5)
+2026-02-10T17:28:30.9929190Z   - Installing pygments (2.19.2)
+2026-02-10T17:28:31.0031880Z   - Installing typing-inspection (0.4.2)
+2026-02-10T17:28:31.2498660Z   - Installing coverage (7.13.4)
+2026-02-10T17:28:31.2605660Z   - Installing jiter (0.13.0)
+2026-02-10T17:28:31.2606220Z   - Installing mypy-extensions (1.1.0)
+2026-02-10T17:28:31.2606690Z   - Installing librt (0.7.8)
+2026-02-10T17:28:31.2607100Z   - Installing httpx (0.28.1)
+2026-02-10T17:28:31.2617000Z   - Installing distro (1.9.0)
+2026-02-10T17:28:31.2617450Z   - Installing google-ai-generativelanguage (0.4.0)
+2026-02-10T17:28:31.3791820Z   - Installing pathspec (1.0.4)
+2026-02-10T17:28:31.4115610Z   - Installing pydantic (2.12.5)
+2026-02-10T17:28:31.4205750Z   - Installing pytest (8.4.2)
+2026-02-10T17:28:31.4409640Z   - Installing pyyaml (6.0.3)
+2026-02-10T17:28:31.4875760Z   - Installing rich (14.3.2)
+2026-02-10T17:28:31.5998020Z   - Installing sniffio (1.3.1)
+2026-02-10T17:28:31.6091110Z   - Installing stevedore (5.6.0)
+2026-02-10T17:28:31.6288160Z   - Installing tqdm (4.67.3)
+2026-02-10T17:28:31.8185420Z   - Installing bandit (1.9.3)
+2026-02-10T17:28:31.8206640Z   - Installing openai (1.109.1)
+2026-02-10T17:28:31.8212320Z   - Installing google-generativeai (0.3.2)
+2026-02-10T17:28:31.8213140Z   - Installing mypy (1.19.1)
+2026-02-10T17:28:31.8242530Z   - Installing ruff (0.1.15)
+2026-02-10T17:28:31.8251540Z   - Installing pytest-cov (4.1.0)
+2026-02-10T17:28:33.5455560Z 
+2026-02-10T17:28:33.5563280Z Writing lock file
+2026-02-10T17:28:33.5665180Z 
+2026-02-10T17:28:33.5766220Z Installing the current project: basalguard (0.1.0)

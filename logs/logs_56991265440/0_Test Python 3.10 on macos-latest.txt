@@ -1,0 +1,300 @@
+﻿2026-02-10T17:28:11.1301310Z Current runner version: '2.331.0'
+2026-02-10T17:28:11.1317160Z ##[group]Runner Image Provisioner
+2026-02-10T17:28:11.1317670Z Hosted Compute Agent
+2026-02-10T17:28:11.1318010Z Version: 20260123.484
+2026-02-10T17:28:11.1318380Z Commit: 6bd6555ca37d84114959e1c76d2c01448ff61c5d
+2026-02-10T17:28:11.1318810Z Build Date: 2026-01-23T19:41:17Z
+2026-02-10T17:28:11.1319220Z Worker ID: {85c8dbf8-f61f-4a1d-8dc3-b0ed0b8c0c49}
+2026-02-10T17:28:11.1319640Z Azure Region: westus
+2026-02-10T17:28:11.1319970Z ##[endgroup]
+2026-02-10T17:28:11.1320850Z ##[group]Operating System
+2026-02-10T17:28:11.1321190Z macOS
+2026-02-10T17:28:11.1321460Z 15.7.3
+2026-02-10T17:28:11.1321730Z 24G419
+2026-02-10T17:28:11.1322000Z ##[endgroup]
+2026-02-10T17:28:11.1322290Z ##[group]Runner Image
+2026-02-10T17:28:11.1322610Z Image: macos-15-arm64
+2026-02-10T17:28:11.1322930Z Version: 20260127.0129.1
+2026-02-10T17:28:11.1323700Z Included Software: https://github.com/actions/runner-images/blob/macos-15-arm64/20260127.0129/images/macos/macos-15-arm64-Readme.md
+2026-02-10T17:28:11.1324650Z Image Release: https://github.com/actions/runner-images/releases/tag/macos-15-arm64%2F20260127.0129
+2026-02-10T17:28:11.1325250Z ##[endgroup]
+2026-02-10T17:28:11.1325940Z ##[group]GITHUB_TOKEN Permissions
+2026-02-10T17:28:11.1327030Z Contents: read
+2026-02-10T17:28:11.1327340Z Metadata: read
+2026-02-10T17:28:11.1327670Z Packages: read
+2026-02-10T17:28:11.1328000Z ##[endgroup]
+2026-02-10T17:28:11.1329620Z Secret source: Actions
+2026-02-10T17:28:11.1330030Z Prepare workflow directory
+2026-02-10T17:28:11.1623020Z Prepare all required actions
+2026-02-10T17:28:11.1661780Z Getting action download info
+2026-02-10T17:28:11.5841750Z Download action repository 'actions/checkout@v4' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)
+2026-02-10T17:28:11.8438080Z Download action repository 'actions/setup-python@v5' (SHA:a26af69be951a213d495a4c3e4e4022e16d87065)
+2026-02-10T17:28:12.0783330Z Complete job name: Test Python 3.10 on macos-latest
+2026-02-10T17:28:12.1191940Z ##[group]Run actions/checkout@v4
+2026-02-10T17:28:12.1192540Z with:
+2026-02-10T17:28:12.1192850Z   repository: gabrielima7/BasalGuard
+2026-02-10T17:28:12.1193450Z   token: ***
+2026-02-10T17:28:12.1193730Z   ssh-strict: true
+2026-02-10T17:28:12.1194000Z   ssh-user: git
+2026-02-10T17:28:12.1194290Z   persist-credentials: true
+2026-02-10T17:28:12.1194600Z   clean: true
+2026-02-10T17:28:12.1194880Z   sparse-checkout-cone-mode: true
+2026-02-10T17:28:12.1195220Z   fetch-depth: 1
+2026-02-10T17:28:12.1195490Z   fetch-tags: false
+2026-02-10T17:28:12.1195780Z   show-progress: true
+2026-02-10T17:28:12.1196060Z   lfs: false
+2026-02-10T17:28:12.1196460Z   submodules: false
+2026-02-10T17:28:12.1196750Z   set-safe-directory: true
+2026-02-10T17:28:12.1197190Z ##[endgroup]
+2026-02-10T17:28:12.7100310Z Syncing repository: gabrielima7/BasalGuard
+2026-02-10T17:28:12.7102020Z ##[group]Getting Git version info
+2026-02-10T17:28:12.7102590Z Working directory is '/Users/runner/work/BasalGuard/BasalGuard'
+2026-02-10T17:28:12.7179590Z [command]/opt/homebrew/bin/git version
+2026-02-10T17:28:12.7875150Z git version 2.52.0
+2026-02-10T17:28:12.7906640Z ##[endgroup]
+2026-02-10T17:28:12.7917730Z Copying '/Users/runner/.gitconfig' to '/Users/runner/work/_temp/11adfaf3-e3be-4e60-86a1-b3d00672d568/.gitconfig'
+2026-02-10T17:28:12.7926310Z Temporarily overriding HOME='/Users/runner/work/_temp/11adfaf3-e3be-4e60-86a1-b3d00672d568' before making global git config changes
+2026-02-10T17:28:12.7935280Z Adding repository directory to the temporary git global config as a safe directory
+2026-02-10T17:28:12.7938640Z [command]/opt/homebrew/bin/git config --global --add safe.directory /Users/runner/work/BasalGuard/BasalGuard
+2026-02-10T17:28:12.8122690Z Deleting the contents of '/Users/runner/work/BasalGuard/BasalGuard'
+2026-02-10T17:28:12.8128340Z ##[group]Initializing the repository
+2026-02-10T17:28:12.8136710Z [command]/opt/homebrew/bin/git init /Users/runner/work/BasalGuard/BasalGuard
+2026-02-10T17:28:12.8506960Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-02-10T17:28:12.8510270Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-02-10T17:28:12.8511340Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-02-10T17:28:12.8512100Z hint: call:
+2026-02-10T17:28:12.8512650Z hint:
+2026-02-10T17:28:12.8513240Z hint: 	git config --global init.defaultBranch <name>
+2026-02-10T17:28:12.8513710Z hint:
+2026-02-10T17:28:12.8514140Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-02-10T17:28:12.8514930Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-02-10T17:28:12.8515670Z hint:
+2026-02-10T17:28:12.8515990Z hint: 	git branch -m <name>
+2026-02-10T17:28:12.8517310Z hint:
+2026-02-10T17:28:12.8518960Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-02-10T17:28:12.8521020Z Initialized empty Git repository in /Users/runner/work/BasalGuard/BasalGuard/.git/
+2026-02-10T17:28:12.8526970Z [command]/opt/homebrew/bin/git remote add origin https://github.com/gabrielima7/BasalGuard
+2026-02-10T17:28:12.8665910Z ##[endgroup]
+2026-02-10T17:28:12.8666790Z ##[group]Disabling automatic garbage collection
+2026-02-10T17:28:12.8667550Z [command]/opt/homebrew/bin/git config --local gc.auto 0
+2026-02-10T17:28:12.8748310Z ##[endgroup]
+2026-02-10T17:28:12.8749930Z ##[group]Setting up auth
+2026-02-10T17:28:12.8762760Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-02-10T17:28:12.8941250Z [command]/opt/homebrew/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-02-10T17:28:13.0622490Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-02-10T17:28:13.0745770Z [command]/opt/homebrew/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-02-10T17:28:13.1945400Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-02-10T17:28:13.2033100Z [command]/opt/homebrew/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-02-10T17:28:13.2823530Z [command]/opt/homebrew/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-02-10T17:28:13.2924670Z ##[endgroup]
+2026-02-10T17:28:13.2926330Z ##[group]Fetching the repository
+2026-02-10T17:28:13.2932920Z [command]/opt/homebrew/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +adc2f215813a0c775243ca501085c28bdb02651f:refs/remotes/origin/main
+2026-02-10T17:28:13.7295430Z From https://github.com/gabrielima7/BasalGuard
+2026-02-10T17:28:13.7296890Z  * [new ref]         adc2f215813a0c775243ca501085c28bdb02651f -> origin/main
+2026-02-10T17:28:13.7712780Z ##[endgroup]
+2026-02-10T17:28:13.7831270Z ##[group]Determining the checkout info
+2026-02-10T17:28:13.7939140Z ##[endgroup]
+2026-02-10T17:28:13.7940050Z [command]/opt/homebrew/bin/git sparse-checkout disable
+2026-02-10T17:28:13.7943030Z [command]/opt/homebrew/bin/git config --local --unset-all extensions.worktreeConfig
+2026-02-10T17:28:13.7945190Z ##[group]Checking out the ref
+2026-02-10T17:28:13.7946430Z [command]/opt/homebrew/bin/git checkout --progress --force -B main refs/remotes/origin/main
+2026-02-10T17:28:13.8100390Z Switched to a new branch 'main'
+2026-02-10T17:28:13.8114930Z branch 'main' set up to track 'origin/main'.
+2026-02-10T17:28:13.8120540Z ##[endgroup]
+2026-02-10T17:28:13.8263380Z [command]/opt/homebrew/bin/git log -1 --format=%H
+2026-02-10T17:28:13.8329580Z adc2f215813a0c775243ca501085c28bdb02651f
+2026-02-10T17:28:13.8697990Z ##[group]Run actions/setup-python@v5
+2026-02-10T17:28:13.8698900Z with:
+2026-02-10T17:28:13.8699480Z   python-version: 3.10
+2026-02-10T17:28:13.8700570Z   check-latest: false
+2026-02-10T17:28:13.8701650Z   token: ***
+2026-02-10T17:28:13.8702310Z   update-environment: true
+2026-02-10T17:28:13.8703000Z   allow-prereleases: false
+2026-02-10T17:28:13.8703660Z   freethreaded: false
+2026-02-10T17:28:13.8704340Z ##[endgroup]
+2026-02-10T17:28:14.0697260Z ##[group]Installed versions
+2026-02-10T17:28:14.0726090Z Version 3.10 was not found in the local cache
+2026-02-10T17:28:14.8657930Z Version 3.10 is available for downloading
+2026-02-10T17:28:14.8658580Z Download from "https://github.com/actions/python-versions/releases/download/3.10.11-11114431484/python-3.10.11-darwin-arm64.tar.gz"
+2026-02-10T17:28:15.7933680Z Extract downloaded archive
+2026-02-10T17:28:15.8127170Z [command]/usr/bin/tar xz -C /Users/runner/work/_temp/8462f8b8-1d7c-47da-aec6-c544910b9581 -f /Users/runner/work/_temp/a5b94106-d795-4d98-9642-f800a7dac386
+2026-02-10T17:28:15.8909850Z Execute installation script
+2026-02-10T17:28:15.9147610Z Check if Python hostedtoolcache folder exist...
+2026-02-10T17:28:15.9240330Z Install Python binaries from prebuilt package
+2026-02-10T17:28:34.1111770Z installer: Package name is Python
+2026-02-10T17:28:34.1113700Z installer: Upgrading at base path /
+2026-02-10T17:28:34.1117920Z installer: The upgrade was successful.
+2026-02-10T17:28:34.1154040Z Create hostedtoolcach symlinks (Required for the backward compatibility)
+2026-02-10T17:28:34.1154980Z Create Python 3.10.11 folder
+2026-02-10T17:28:34.1291160Z Create additional symlinks (Required for the UsePythonVersion Azure Pipelines task and the setup-python GitHub Action)
+2026-02-10T17:28:34.1446640Z Upgrading pip...
+2026-02-10T17:28:35.6155770Z Looking in links: /var/folders/yz/zr09txvs5dn18vt4cn21kzl40000gn/T/tmpwxyh_a4k
+2026-02-10T17:28:35.6162270Z Requirement already satisfied: setuptools in /Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages (65.5.0)
+2026-02-10T17:28:35.6163580Z Requirement already satisfied: pip in /Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages (23.0.1)
+2026-02-10T17:28:36.0773840Z Collecting pip
+2026-02-10T17:28:36.1344700Z Downloading pip-26.0.1-py3-none-any.whl (1.8 MB)
+2026-02-10T17:28:36.1994540Z ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.8/1.8 MB 28.5 MB/s eta 0:00:00
+2026-02-10T17:28:36.1994910Z 
+2026-02-10T17:28:36.2270580Z Installing collected packages: pip
+2026-02-10T17:28:36.2275600Z Attempting uninstall: pip
+2026-02-10T17:28:36.2278300Z Found existing installation: pip 23.0.1
+2026-02-10T17:28:36.3231580Z Uninstalling pip-23.0.1:
+2026-02-10T17:28:36.5128960Z Successfully uninstalled pip-23.0.1
+2026-02-10T17:28:37.1142070Z Successfully installed pip-26.0.1
+2026-02-10T17:28:37.1594880Z Install OpenSSL certificates
+2026-02-10T17:28:37.5444270Z Collecting certifi
+2026-02-10T17:28:37.5546690Z Using cached certifi-2026.1.4-py3-none-any.whl.metadata (2.5 kB)
+2026-02-10T17:28:37.5618630Z Using cached certifi-2026.1.4-py3-none-any.whl (152 kB)
+2026-02-10T17:28:37.5817450Z Installing collected packages: certifi
+2026-02-10T17:28:37.5935740Z Successfully installed certifi-2026.1.4
+2026-02-10T17:28:37.8333170Z -- pip install --upgrade certifi
+2026-02-10T17:28:37.8375890Z  -- removing any existing file or link
+2026-02-10T17:28:37.8376480Z  -- creating symlink to certifi certificate bundle
+2026-02-10T17:28:37.8378420Z  -- setting permissions
+2026-02-10T17:28:37.8381680Z  -- update complete
+2026-02-10T17:28:37.8391760Z Create complete file
+2026-02-10T17:28:37.8459050Z Successfully set up CPython (3.10.11)
+2026-02-10T17:28:37.8460850Z ##[endgroup]
+2026-02-10T17:28:37.8886820Z ##[group]Run pipx install poetry
+2026-02-10T17:28:37.8887310Z [36;1mpipx install poetry[0m
+2026-02-10T17:28:37.8980820Z shell: /bin/bash -e {0}
+2026-02-10T17:28:37.8981020Z env:
+2026-02-10T17:28:37.8981330Z   pythonLocation: /Users/runner/hostedtoolcache/Python/3.10.11/arm64
+2026-02-10T17:28:37.8981730Z   PKG_CONFIG_PATH: /Users/runner/hostedtoolcache/Python/3.10.11/arm64/lib/pkgconfig
+2026-02-10T17:28:37.8982130Z   Python_ROOT_DIR: /Users/runner/hostedtoolcache/Python/3.10.11/arm64
+2026-02-10T17:28:37.8993710Z   Python2_ROOT_DIR: /Users/runner/hostedtoolcache/Python/3.10.11/arm64
+2026-02-10T17:28:37.8995520Z   Python3_ROOT_DIR: /Users/runner/hostedtoolcache/Python/3.10.11/arm64
+2026-02-10T17:28:37.8996600Z ##[endgroup]
+2026-02-10T17:28:38.3851480Z creating virtual environment...
+2026-02-10T17:28:38.4417300Z creating shared libraries...
+2026-02-10T17:28:41.0233930Z upgrading shared libraries...
+2026-02-10T17:28:42.6114300Z installing poetry...
+2026-02-10T17:28:49.0240670Z done! ✨ 🌟 ✨
+2026-02-10T17:28:49.0243570Z   installed package poetry 2.3.2, installed using Python 3.14.2
+2026-02-10T17:28:49.0244570Z   These apps are now globally available
+2026-02-10T17:28:49.0245420Z     - poetry
+2026-02-10T17:28:49.0603040Z ##[group]Run poetry install
+2026-02-10T17:28:49.0603790Z [36;1mpoetry install[0m
+2026-02-10T17:28:49.0659460Z shell: /bin/bash -e {0}
+2026-02-10T17:28:49.0659820Z env:
+2026-02-10T17:28:49.0660140Z   pythonLocation: /Users/runner/hostedtoolcache/Python/3.10.11/arm64
+2026-02-10T17:28:49.0660830Z   PKG_CONFIG_PATH: /Users/runner/hostedtoolcache/Python/3.10.11/arm64/lib/pkgconfig
+2026-02-10T17:28:49.0661270Z   Python_ROOT_DIR: /Users/runner/hostedtoolcache/Python/3.10.11/arm64
+2026-02-10T17:28:49.0661740Z   Python2_ROOT_DIR: /Users/runner/hostedtoolcache/Python/3.10.11/arm64
+2026-02-10T17:28:49.0662140Z   Python3_ROOT_DIR: /Users/runner/hostedtoolcache/Python/3.10.11/arm64
+2026-02-10T17:28:49.0663770Z ##[endgroup]
+2026-02-10T17:28:49.7087120Z Creating virtualenv basalguard-80myX1_h-py3.10 in /Users/runner/Library/Caches/pypoetry/virtualenvs
+2026-02-10T17:28:50.3751670Z Updating dependencies
+2026-02-10T17:28:50.3815620Z Resolving dependencies...
+2026-02-10T17:28:56.3672710Z 
+2026-02-10T17:28:56.3682080Z Package operations: 54 installs, 0 updates, 0 removals
+2026-02-10T17:28:56.3683120Z 
+2026-02-10T17:28:56.3691280Z   - Installing pycparser (3.0)
+2026-02-10T17:28:56.5449500Z   - Installing protobuf (4.25.8)
+2026-02-10T17:28:56.5453780Z   - Installing cffi (2.0.0)
+2026-02-10T17:28:56.5463340Z   - Installing pyasn1 (0.6.2)
+2026-02-10T17:28:56.5479830Z   - Installing typing-extensions (4.15.0)
+2026-02-10T17:28:56.7535050Z   - Installing certifi (2026.1.4)
+2026-02-10T17:28:56.7538480Z   - Installing grpcio (1.78.0)
+2026-02-10T17:28:56.7540470Z   - Installing idna (3.11)
+2026-02-10T17:28:56.7543580Z   - Installing charset-normalizer (3.4.4)
+2026-02-10T17:28:56.7545210Z   - Installing googleapis-common-protos (1.72.0)
+2026-02-10T17:28:56.7547440Z   - Installing pyasn1-modules (0.4.2)
+2026-02-10T17:28:56.7550250Z   - Installing cryptography (46.0.4)
+2026-02-10T17:28:56.8424830Z   - Installing rsa (4.9.1)
+2026-02-10T17:28:56.8458220Z   - Installing urllib3 (2.6.3)
+2026-02-10T17:28:57.5119600Z   - Installing exceptiongroup (1.3.1)
+2026-02-10T17:28:57.5259010Z   - Installing mdurl (0.1.2)
+2026-02-10T17:28:57.5361770Z   - Installing proto-plus (1.27.1)
+2026-02-10T17:28:57.5501130Z   - Installing requests (2.32.5)
+2026-02-10T17:28:57.5615470Z   - Installing google-auth (2.48.0)
+2026-02-10T17:28:57.5735870Z   - Installing grpcio-status (1.62.3)
+2026-02-10T17:28:57.5837190Z   - Installing h11 (0.16.0)
+2026-02-10T17:28:57.9869610Z   - Installing annotated-types (0.7.0)
+2026-02-10T17:28:57.9889890Z   - Installing anyio (4.12.1)
+2026-02-10T17:28:57.9890520Z   - Installing google-api-core (2.29.0)
+2026-02-10T17:28:57.9892210Z   - Installing httpcore (1.0.9)
+2026-02-10T17:28:57.9893320Z   - Installing iniconfig (2.3.0)
+2026-02-10T17:28:57.9893800Z   - Installing markdown-it-py (4.0.0)
+2026-02-10T17:28:57.9895170Z   - Installing packaging (26.0)
+2026-02-10T17:28:58.2212890Z   - Installing pluggy (1.6.0)
+2026-02-10T17:28:58.2313180Z   - Installing pydantic-core (2.41.5)
+2026-02-10T17:28:58.3104580Z   - Installing pygments (2.19.2)
+2026-02-10T17:28:58.4376790Z   - Installing tomli (2.4.0)
+2026-02-10T17:28:58.4387190Z   - Installing typing-inspection (0.4.2)
+2026-02-10T17:28:58.7223190Z   - Installing coverage (7.13.4)
+2026-02-10T17:28:58.7338440Z   - Installing jiter (0.13.0)
+2026-02-10T17:28:58.7341170Z   - Installing librt (0.7.8)
+2026-02-10T17:28:58.7353670Z   - Installing mypy-extensions (1.1.0)
+2026-02-10T17:28:58.7355520Z   - Installing distro (1.9.0)
+2026-02-10T17:28:58.7357120Z   - Installing google-ai-generativelanguage (0.4.0)
+2026-02-10T17:28:58.7357420Z   - Installing httpx (0.28.1)
+2026-02-10T17:28:58.8484570Z   - Installing pathspec (1.0.4)
+2026-02-10T17:28:58.8618790Z   - Installing pydantic (2.12.5)
+2026-02-10T17:28:58.8721460Z   - Installing pytest (8.4.2)
+2026-02-10T17:28:58.8781270Z   - Installing pyyaml (6.0.3)
+2026-02-10T17:28:58.9493490Z   - Installing rich (14.3.2)
+2026-02-10T17:28:58.9665850Z   - Installing sniffio (1.3.1)
+2026-02-10T17:28:58.9776540Z   - Installing stevedore (5.6.0)
+2026-02-10T17:28:58.9846130Z   - Installing tqdm (4.67.3)
+2026-02-10T17:28:59.2481400Z   - Installing pytest-cov (4.1.0)
+2026-02-10T17:28:59.2486130Z   - Installing ruff (0.1.15)
+2026-02-10T17:28:59.2490130Z   - Installing bandit (1.9.3)
+2026-02-10T17:28:59.2491110Z   - Installing mypy (1.19.1)
+2026-02-10T17:28:59.2498260Z   - Installing openai (1.109.1)
+2026-02-10T17:28:59.2499390Z   - Installing google-generativeai (0.3.2)
+2026-02-10T17:29:01.5111590Z 
+2026-02-10T17:29:01.5113720Z Writing lock file
+2026-02-10T17:29:01.5118830Z 
+2026-02-10T17:29:01.5119460Z Installing the current project: basalguard (0.1.0)
+2026-02-10T17:29:02.4186160Z ##[group]Run poetry run pytest tests/ -v
+2026-02-10T17:29:02.4187150Z [36;1mpoetry run pytest tests/ -v[0m
+2026-02-10T17:29:02.4256540Z shell: /bin/bash -e {0}
+2026-02-10T17:29:02.4256800Z env:
+2026-02-10T17:29:02.4257120Z   pythonLocation: /Users/runner/hostedtoolcache/Python/3.10.11/arm64
+2026-02-10T17:29:02.4257660Z   PKG_CONFIG_PATH: /Users/runner/hostedtoolcache/Python/3.10.11/arm64/lib/pkgconfig
+2026-02-10T17:29:02.4258150Z   Python_ROOT_DIR: /Users/runner/hostedtoolcache/Python/3.10.11/arm64
+2026-02-10T17:29:02.4258710Z   Python2_ROOT_DIR: /Users/runner/hostedtoolcache/Python/3.10.11/arm64
+2026-02-10T17:29:02.4259220Z   Python3_ROOT_DIR: /Users/runner/hostedtoolcache/Python/3.10.11/arm64
+2026-02-10T17:29:02.4259560Z ##[endgroup]
+2026-02-10T17:29:03.6812230Z ============================= test session starts ==============================
+2026-02-10T17:29:03.6822700Z platform darwin -- Python 3.10.11, pytest-8.4.2, pluggy-1.6.0 -- /Users/runner/Library/Caches/pypoetry/virtualenvs/basalguard-80myX1_h-py3.10/bin/python
+2026-02-10T17:29:03.6823370Z cachedir: .pytest_cache
+2026-02-10T17:29:03.6823700Z rootdir: /Users/runner/work/BasalGuard/BasalGuard
+2026-02-10T17:29:03.6823940Z configfile: pyproject.toml
+2026-02-10T17:29:03.6824220Z plugins: anyio-4.12.1, cov-4.1.0
+2026-02-10T17:29:03.8146080Z collecting ... collected 0 items / 1 error
+2026-02-10T17:29:03.8146570Z 
+2026-02-10T17:29:03.8147160Z ==================================== ERRORS ====================================
+2026-02-10T17:29:03.8148170Z ________________ ERROR collecting tests/test_agent_firewall.py _________________
+2026-02-10T17:29:03.8149480Z ImportError while importing test module '/Users/runner/work/BasalGuard/BasalGuard/tests/test_agent_firewall.py'.
+2026-02-10T17:29:03.8150750Z Hint: make sure your test modules/packages have valid Python names.
+2026-02-10T17:29:03.8151700Z Traceback:
+2026-02-10T17:29:03.8152590Z /Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/importlib/__init__.py:126: in import_module
+2026-02-10T17:29:03.8153930Z     return _bootstrap._gcd_import(name[level:], package, level)
+2026-02-10T17:29:03.8154900Z tests/test_agent_firewall.py:21: in <module>
+2026-02-10T17:29:03.8155640Z     from basalguard.core.agent_firewall import (
+2026-02-10T17:29:03.8156440Z src/basalguard/core/agent_firewall.py:34: in <module>
+2026-02-10T17:29:03.8157230Z     from taipanstack.security.guards import (
+2026-02-10T17:29:03.8158130Z E   ModuleNotFoundError: No module named 'taipanstack'
+2026-02-10T17:29:03.8158990Z =========================== short test summary info ============================
+2026-02-10T17:29:03.8159800Z ERROR tests/test_agent_firewall.py
+2026-02-10T17:29:03.8160840Z !!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!
+2026-02-10T17:29:03.8163130Z =============================== 1 error in 0.10s ===============================
+2026-02-10T17:29:03.8527370Z ##[error]Process completed with exit code 2.
+2026-02-10T17:29:03.8731580Z Post job cleanup.
+2026-02-10T17:29:04.0103600Z [command]/opt/homebrew/bin/git version
+2026-02-10T17:29:04.0370760Z git version 2.52.0
+2026-02-10T17:29:04.0419960Z Copying '/Users/runner/.gitconfig' to '/Users/runner/work/_temp/fa38459f-e2cb-4858-892b-31fc183ce707/.gitconfig'
+2026-02-10T17:29:04.0431060Z Temporarily overriding HOME='/Users/runner/work/_temp/fa38459f-e2cb-4858-892b-31fc183ce707' before making global git config changes
+2026-02-10T17:29:04.0433120Z Adding repository directory to the temporary git global config as a safe directory
+2026-02-10T17:29:04.0451060Z [command]/opt/homebrew/bin/git config --global --add safe.directory /Users/runner/work/BasalGuard/BasalGuard
+2026-02-10T17:29:04.0572210Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-02-10T17:29:04.0645650Z [command]/opt/homebrew/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-02-10T17:29:04.1725380Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-02-10T17:29:04.1794590Z http.https://github.com/.extraheader
+2026-02-10T17:29:04.1814290Z [command]/opt/homebrew/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-02-10T17:29:04.1907640Z [command]/opt/homebrew/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-02-10T17:29:04.2895030Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-02-10T17:29:04.2967500Z [command]/opt/homebrew/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-02-10T17:29:04.4087070Z Cleaning up orphan processes

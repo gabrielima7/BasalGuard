@@ -1,0 +1,18 @@
+﻿2026-02-10T17:28:13.3199600Z ##[group]Run pipx install poetry
+2026-02-10T17:28:13.3200500Z [36;1mpipx install poetry[0m
+2026-02-10T17:28:13.3258530Z shell: /bin/bash -e {0}
+2026-02-10T17:28:13.3259230Z env:
+2026-02-10T17:28:13.3260020Z   pythonLocation: /Users/runner/hostedtoolcache/Python/3.12.10/arm64
+2026-02-10T17:28:13.3261440Z   PKG_CONFIG_PATH: /Users/runner/hostedtoolcache/Python/3.12.10/arm64/lib/pkgconfig
+2026-02-10T17:28:13.3262970Z   Python_ROOT_DIR: /Users/runner/hostedtoolcache/Python/3.12.10/arm64
+2026-02-10T17:28:13.3264220Z   Python2_ROOT_DIR: /Users/runner/hostedtoolcache/Python/3.12.10/arm64
+2026-02-10T17:28:13.3265620Z   Python3_ROOT_DIR: /Users/runner/hostedtoolcache/Python/3.12.10/arm64
+2026-02-10T17:28:13.3266740Z ##[endgroup]
+2026-02-10T17:28:13.9592020Z creating virtual environment...
+2026-02-10T17:28:14.0526710Z creating shared libraries...
+2026-02-10T17:28:17.0983810Z upgrading shared libraries...
+2026-02-10T17:28:18.6127090Z installing poetry...
+2026-02-10T17:28:23.2661120Z done! ✨ 🌟 ✨
+2026-02-10T17:28:23.2662710Z   installed package poetry 2.3.2, installed using Python 3.14.2
+2026-02-10T17:28:23.2694370Z   These apps are now globally available
+2026-02-10T17:28:23.2730360Z     - poetry

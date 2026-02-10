@@ -4,7 +4,10 @@ version = "0.1.0"
 description = "A Deterministic Security Firewall for AI Agents"
 authors = ["Gabriel Lima <gabrielima.alu.lmb@gmail.com>"]
 readme = "README.md"
-packages = [{include = "basalguard", from = "src"}]
+packages = [
+    {include = "basalguard", from = "src"},
+    {include = "taipanstack", from = "src/taipanstack_repo/src"}
+]
 
 [tool.poetry.dependencies]
 python = "^3.10"

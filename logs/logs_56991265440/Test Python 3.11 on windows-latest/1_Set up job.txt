@@ -1,0 +1,32 @@
+﻿2026-02-10T17:28:13.7276116Z Current runner version: '2.331.0'
+2026-02-10T17:28:13.7676475Z ##[group]Runner Image Provisioner
+2026-02-10T17:28:13.7677436Z Hosted Compute Agent
+2026-02-10T17:28:13.7677941Z Version: 20260123.484
+2026-02-10T17:28:13.7678508Z Commit: 6bd6555ca37d84114959e1c76d2c01448ff61c5d
+2026-02-10T17:28:13.7679143Z Build Date: 2026-01-23T19:41:17Z
+2026-02-10T17:28:13.7679761Z Worker ID: {f484de6a-41a7-494f-b179-2777dcc6194c}
+2026-02-10T17:28:13.7680419Z Azure Region: westus
+2026-02-10T17:28:13.7680867Z ##[endgroup]
+2026-02-10T17:28:13.7682202Z ##[group]Operating System
+2026-02-10T17:28:13.7682764Z Microsoft Windows Server 2025
+2026-02-10T17:28:13.7683296Z 10.0.26100
+2026-02-10T17:28:13.7683707Z Datacenter
+2026-02-10T17:28:13.7684143Z ##[endgroup]
+2026-02-10T17:28:13.7684550Z ##[group]Runner Image
+2026-02-10T17:28:13.7685072Z Image: windows-2025
+2026-02-10T17:28:13.7685538Z Version: 20260202.17.1
+2026-02-10T17:28:13.7687794Z Included Software: https://github.com/actions/runner-images/blob/win25/20260202.17/images/windows/Windows2025-Readme.md
+2026-02-10T17:28:13.7690712Z Image Release: https://github.com/actions/runner-images/releases/tag/win25%2F20260202.17
+2026-02-10T17:28:13.7692012Z ##[endgroup]
+2026-02-10T17:28:13.7693139Z ##[group]GITHUB_TOKEN Permissions
+2026-02-10T17:28:13.7695038Z Contents: read
+2026-02-10T17:28:13.7695576Z Metadata: read
+2026-02-10T17:28:13.7696046Z Packages: read
+2026-02-10T17:28:13.7696464Z ##[endgroup]
+2026-02-10T17:28:13.7698589Z Secret source: Actions
+2026-02-10T17:28:13.7699230Z Prepare workflow directory
+2026-02-10T17:28:13.8951408Z Prepare all required actions
+2026-02-10T17:28:13.8993786Z Getting action download info
+2026-02-10T17:28:14.3764655Z Download action repository 'actions/checkout@v4' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)
+2026-02-10T17:28:14.5754389Z Download action repository 'actions/setup-python@v5' (SHA:a26af69be951a213d495a4c3e4e4022e16d87065)
+2026-02-10T17:28:15.2801067Z Complete job name: Test Python 3.11 on windows-latest
