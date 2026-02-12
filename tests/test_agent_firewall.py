@@ -137,24 +137,27 @@ class TestSafeExecuteCommand:
         assert result["status"] == "blocked"
         assert "curl" in result["violator"]
 
-    def test_blocks_command_injection_semicolon(self, firewall: BasalGuardCore) -> None:
-        """Shell metacharacter (;) in arguments is blocked."""
-        result = firewall.safe_execute_command(["ls", "; rm -rf /"])
-        assert result["status"] == "blocked"
-        assert (
-            "command_injection" in result["reason"].lower()
-            or "dangerous" in result["reason"].lower()
-        )
+    def test_allows_safe_punctuation_semicolon(self, firewall: BasalGuardCore) -> None:
+        """Shell metacharacter (;) is treated as literal arg (shell=False)."""
+        # "ls" might fail looking for ";", but firewall should allow the attempt.
+        # Use echo to prove it's treated literally.
+        result = firewall.safe_execute_command(["echo", "hello; world"])
+        assert result["status"] == "success"
+        assert "hello; world" in result["stdout"]
 
-    def test_blocks_command_injection_pipe(self, firewall: BasalGuardCore) -> None:
-        """Pipe (|) in arguments is blocked."""
-        result = firewall.safe_execute_command(["echo", "hi | cat /etc/shadow"])
-        assert result["status"] == "blocked"
+    def test_allows_safe_punctuation_pipe(self, firewall: BasalGuardCore) -> None:
+        """Pipe (|) is treated as literal arg (shell=False)."""
+        result = firewall.safe_execute_command(["echo", "hi | cat"])
+        assert result["status"] == "success"
+        assert "hi | cat" in result["stdout"]
 
-    def test_blocks_command_injection_backtick(self, firewall: BasalGuardCore) -> None:
-        """Backtick command substitution is blocked."""
+    def test_allows_safe_punctuation_backtick(self, firewall: BasalGuardCore) -> None:
+        """Backticks are treated as literal args (shell=False)."""
         result = firewall.safe_execute_command(["echo", "`whoami`"])
-        assert result["status"] == "blocked"
+        assert result["status"] == "success"
+        # Verify it did NOT execute whoami (which would output the username)
+        # It should output literal backticks
+        assert "`whoami`" in result["stdout"]
 
     def test_blocks_empty_command(self, firewall: BasalGuardCore) -> None:
         """An empty command list is blocked."""
@@ -227,13 +230,14 @@ class TestValidateIntent:
         )
         assert result["status"] == "blocked"
 
-    def test_injection_via_intent(self, firewall: BasalGuardCore) -> None:
-        """Command injection via validate_intent is still blocked."""
+    def test_injection_via_intent_safe(self, firewall: BasalGuardCore) -> None:
+        """Command injection attempts are treated as literals via validate_intent."""
         result = firewall.validate_intent(
             "execute_command",
-            {"command_parts": ["ls", "&& rm -rf /"]},
+            {"command_parts": ["echo", "&& rm -rf /"]},
         )
-        assert result["status"] == "blocked"
+        assert result["status"] == "success"
+        assert "&& rm -rf /" in result["stdout"]
 
 
 # ── validate_project_name (bonus) ────────────────────────────────────

@@ -110,16 +110,21 @@ def guard_path_traversal(
             value=str(resolved)[:100],
         ) from e
 
-    # Check for symlinks if not allowed
-    is_existing_symlink = (
-        not allow_symlinks and resolved.exists() and resolved.is_symlink()
-    )
-    if is_existing_symlink:
-        raise SecurityError(
-            "Symlinks are not allowed",
-            guard_name="path_traversal",
-            value=str(resolved),
-        )
+    # Check for symlinks if not allowed (check BEFORE resolution too)
+    if not allow_symlinks:
+        if path.is_symlink():
+            raise SecurityError(
+                "Symlinks are not allowed",
+                guard_name="path_traversal",
+                value=str(path),
+            )
+        # Also check resolved path just in case
+        if resolved.exists() and resolved.is_symlink():
+            raise SecurityError(
+                "Symlinks are not allowed",
+                guard_name="path_traversal",
+                value=str(resolved),
+            )
 
     return resolved
 
@@ -158,21 +163,9 @@ def guard_command_injection(
     cmd_list = list(command)
 
     # Dangerous shell metacharacters
+    # Since we enforce shell=False, most shell metacharacters are safe as arguments.
+    # We only block null bytes which are unsafe at syscall level.
     dangerous_patterns: list[tuple[str, str]] = [
-        (";", "command separator"),
-        ("|", "pipe"),
-        ("&", "background/and operator"),
-        ("$", "variable expansion"),
-        ("`", "command substitution"),
-        ("$(", "command substitution"),
-        ("${", "variable expansion"),
-        (">", "redirect"),
-        ("<", "redirect"),
-        (">>", "redirect append"),
-        ("||", "or operator"),
-        ("&&", "and operator"),
-        ("\n", "newline"),
-        ("\r", "carriage return"),
         ("\x00", "null byte"),
     ]
 
