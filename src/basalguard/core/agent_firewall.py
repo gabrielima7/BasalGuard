@@ -33,7 +33,8 @@ from typing import Any
 
 import httpx
 
-from basalguard.security.network import NetworkSecurityError, validate_url
+from basalguard.security.network import validate_url
+from basalguard.tools.advanced_file_ops import read_file_paged, search_in_file
 from taipanstack.security.guards import (
     SecurityError,
     guard_command_injection,
@@ -65,15 +66,22 @@ DEFAULT_COMMAND_ALLOWLIST: frozenset[str] = frozenset(
 # Maximum file size for reads (1 MiB) — prevents DoS on huge files.
 _MAX_READ_SIZE_BYTES: int = 1_048_576
 
-# Maximum response body to keep in memory (50 KiB).
-_MAX_RESPONSE_BODY: int = 50 * 1024
+# Maximum response body to keep in memory (100 KiB).
+_MAX_RESPONSE_BODY: int = 100 * 1024
 
 # HTTP request timeout in seconds.
 _HTTP_TIMEOUT_SECONDS: int = 10
 
 # Actions the firewall understands.
 _VALID_ACTIONS: frozenset[str] = frozenset(
-    {"write_file", "read_file", "execute_command", "web_request"}
+    {
+        "write_file",
+        "read_file",
+        "execute_command",
+        "web_request",
+        "search_in_file",
+        "read_file_paged",
+    }
 )
 
 
@@ -274,6 +282,97 @@ class BasalGuardCore:
                 "violator": path,
             }
 
+    # ── Safe Search in File ──────────────────────────────────────────
+
+    def safe_search_in_file(
+        self, path: str, pattern: str, case_sensitive: bool = False
+    ) -> dict[str, Any]:
+        """Search for a pattern in a file safely.
+
+        Args:
+            path: File path.
+            pattern: Search pattern.
+            case_sensitive: Whether search is case sensitive.
+
+        Returns:
+            Dict with search results.
+        """
+        try:
+            matches = search_in_file(
+                path,
+                pattern,
+                case_sensitive=case_sensitive,
+                base_dir=self.workspace_root,
+            )
+            return {
+                "status": "success",
+                "action": "search_in_file",
+                "path": path,
+                "pattern": pattern,
+                "matches": matches,
+                "count": len(matches),
+            }
+        except SecurityError as exc:
+            logger.warning("BLOCKED search_in_file — %s (value=%s)", exc, exc.value)
+            return {
+                "status": "blocked",
+                "action": "search_in_file",
+                "reason": str(exc),
+                "violator": exc.value or path,
+            }
+        except (ValueError, OSError, FileNotFoundError) as exc:
+            logger.warning("BLOCKED search_in_file — %s", exc)
+            return {
+                "status": "error",
+                "action": "search_in_file",
+                "reason": str(exc),
+                "violator": path,
+            }
+
+    # ── Safe Read File Paged ─────────────────────────────────────────
+
+    def safe_read_file_paged(
+        self, path: str, offset: int = 0, limit: int = 2000
+    ) -> dict[str, Any]:
+        """Read a file with pagination safely.
+
+        Args:
+            path: File path.
+            offset: Byte offset to start.
+            limit: Max bytes/chars to read.
+
+        Returns:
+            Dict with content.
+        """
+        try:
+            content = read_file_paged(
+                path, offset=offset, limit=limit, base_dir=self.workspace_root
+            )
+            return {
+                "status": "success",
+                "action": "read_file_paged",
+                "path": path,
+                "offset": offset,
+                "limit": limit,
+                "content": content,
+            }
+        except SecurityError as exc:
+            logger.warning("BLOCKED read_file_paged — %s (value=%s)", exc, exc.value)
+            return {
+                "status": "blocked",
+                "action": "read_file_paged",
+                "reason": str(exc),
+                "violator": exc.value or path,
+            }
+        except (ValueError, OSError, FileNotFoundError) as exc:
+            logger.warning("BLOCKED read_file_paged — %s", exc)
+            return {
+                "status": "error",
+                "action": "read_file_paged",
+                "reason": str(exc),
+                "violator": path,
+            }
+
     # ── Safe Command Execution ───────────────────────────────────────
 
     def safe_execute_command(
@@ -361,6 +460,8 @@ class BasalGuardCore:
               ``params["content"]``.
             - ``"execute_command"``: requires
               ``params["command_parts"]`` (a ``list[str]``).
+            - ``"search_in_file"``: requires ``params["path"]``, ``params["pattern"]``.
+            - ``"read_file_paged"``: requires ``params["path"]``.
 
         Args:
             action: The action name (e.g. ``"write_file"``).
@@ -415,6 +516,28 @@ class BasalGuardCore:
                 }
             return self.safe_execute_command(command_parts)
 
+        if action == "search_in_file":
+            path = params.get("path")
+            pattern = params.get("pattern")
+            if not isinstance(path, str) or not isinstance(pattern, str):
+                return {
+                    "status": "error",
+                    "reason": "Action 'search_in_file' requires string 'path' and 'pattern' parameters."
+                }
+            case_sensitive = params.get("case_sensitive", False)
+            return self.safe_search_in_file(path, pattern, case_sensitive=bool(case_sensitive))
+
+        if action == "read_file_paged":
+            path = params.get("path")
+            if not isinstance(path, str):
+                return {
+                    "status": "error",
+                    "reason": "Action 'read_file_paged' requires string 'path' parameter."
+                }
+            offset = params.get("offset", 0)
+            limit = params.get("limit", 2000)
+            return self.safe_read_file_paged(path, offset=int(offset), limit=int(limit))
+
         # action == "web_request"
         url = params.get("url")
         if not isinstance(url, str) or not url:
@@ -464,7 +587,7 @@ class BasalGuardCore:
 
         try:
             validated = validate_url(url)
-        except NetworkSecurityError as exc:
+        except SecurityError as exc:
             logger.warning("BLOCKED web_request — %s", exc)
             return {
                 "status": "blocked",

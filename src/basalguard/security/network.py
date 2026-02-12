@@ -21,11 +21,17 @@ import logging
 import socket
 from urllib.parse import urlparse
 
+from taipanstack.security.guards import SecurityError
+
 logger = logging.getLogger("basalguard.network")
 
 
-class NetworkSecurityError(Exception):
-    """Raised when a URL points to a blocked network destination."""
+class NetworkSecurityError(SecurityError):
+    """Deprecated: Use SecurityError instead.
+    Raised when a URL points to a blocked network destination.
+    """
+    def __init__(self, message: str) -> None:
+        super().__init__(message, guard_name="network_guard")
 
 
 # ── Schemes we allow ─────────────────────────────────────────────────
@@ -55,7 +61,7 @@ def validate_url(
         The original URL string (unmodified) if it passes validation.
 
     Raises:
-        NetworkSecurityError: If the URL is unsafe (private IP, bad
+        SecurityError: If the URL is unsafe (private IP, bad
             scheme, blocked domain, unresolvable hostname, etc.).
 
     """
@@ -63,30 +69,42 @@ def validate_url(
     try:
         parsed = urlparse(url)
     except Exception as exc:
-        raise NetworkSecurityError(f"Malformed URL: {url}") from exc
+        raise SecurityError(
+            f"Malformed URL: {url}", guard_name="network_guard", value=url
+        ) from exc
 
     if parsed.scheme not in _ALLOWED_SCHEMES:
-        raise NetworkSecurityError(
-            f"Blocked scheme '{parsed.scheme}'. Allowed: {sorted(_ALLOWED_SCHEMES)}"
+        raise SecurityError(
+            f"Blocked scheme '{parsed.scheme}'. Allowed: {sorted(_ALLOWED_SCHEMES)}",
+            guard_name="network_guard",
+            value=parsed.scheme
         )
 
     hostname = parsed.hostname
     if not hostname:
-        raise NetworkSecurityError(f"No hostname in URL: {url}")
+        raise SecurityError(
+            f"No hostname in URL: {url}", guard_name="network_guard", value=url
+        )
 
     # ── 2. Domain allowlist (optional) ───────────────────────────────
     if allowed_domains is not None:
         normalised = [d.lower().strip() for d in allowed_domains]
         if hostname.lower() not in normalised:
-            raise NetworkSecurityError(
-                f"Domain '{hostname}' not in allowed list: {normalised}"
+            raise SecurityError(
+                f"Domain '{hostname}' not in allowed list: {normalised}",
+                guard_name="network_guard",
+                value=hostname
             )
 
     # ── 3. Check if hostname is already a raw IP ─────────────────────
     try:
         addr = ipaddress.ip_address(hostname)
         if addr.is_private or addr.is_reserved or addr.is_loopback:
-            raise NetworkSecurityError(f"Blocked private/reserved IP: {addr}")
+            raise SecurityError(
+                f"Blocked private/reserved IP: {addr}",
+                guard_name="network_guard",
+                value=str(addr)
+            )
         logger.debug("URL %s points to public IP %s — allowed", url, addr)
         return url
     except ValueError:
@@ -96,12 +114,18 @@ def validate_url(
     try:
         infos = socket.getaddrinfo(hostname, None, socket.AF_UNSPEC)
     except socket.gaierror as exc:
-        raise NetworkSecurityError(
-            f"DNS resolution failed for '{hostname}': {exc}"
+        raise SecurityError(
+            f"DNS resolution failed for '{hostname}': {exc}",
+            guard_name="network_guard",
+            value=hostname
         ) from exc
 
     if not infos:
-        raise NetworkSecurityError(f"DNS returned no results for '{hostname}'")
+        raise SecurityError(
+            f"DNS returned no results for '{hostname}'",
+            guard_name="network_guard",
+            value=hostname
+        )
 
     for family, _type, _proto, _canonname, sockaddr in infos:
         ip_str = sockaddr[0]
@@ -111,9 +135,11 @@ def validate_url(
             continue
 
         if addr.is_private or addr.is_reserved or addr.is_loopback:
-            raise NetworkSecurityError(
+            raise SecurityError(
                 f"Domain '{hostname}' resolves to private/reserved IP "
-                f"{addr} — SSRF blocked"
+                f"{addr} — SSRF blocked",
+                guard_name="network_guard",
+                value=str(addr)
             )
 
     logger.debug("URL %s validated — all IPs public", url)

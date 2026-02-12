@@ -14,11 +14,13 @@ from pathlib import Path
 
 import pytest
 
-from basalguard.security.network import (
-    NetworkSecurityError,
-    validate_url,
-)
+from basalguard.security.network import validate_url
+from taipanstack.security.guards import SecurityError
 from basalguard.core.agent_firewall import BasalGuardCore
+
+# Alias for compatibility with existing tests structure if needed,
+# or just replace usages.
+NetworkSecurityError = SecurityError
 
 
 # ── validate_url — scheme checks ────────────────────────────────────
