@@ -66,6 +66,22 @@ class TestGuardPathTraversal:
         # The error should indicate path is not under base dir
         assert "path_traversal" in str(exc_info.value).lower()
 
+    def test_symlink_traversal_relative_path_bug(self, tmp_path: Path) -> None:
+        """Test regression for symlink check using relative path with base_dir."""
+        # Setup: /tmp/workspace/link -> /tmp/workspace/target
+        workspace = tmp_path / "workspace"
+        workspace.mkdir()
+        target = workspace / "target"
+        target.touch()
+        link = workspace / "link"
+        link.symlink_to(target)
+
+        # Calling guard with "link" and base_dir=workspace should fail
+        # because "link" is a symlink inside workspace.
+        with pytest.raises(SecurityError) as exc_info:
+            guard_path_traversal("link", base_dir=workspace, allow_symlinks=False)
+        assert "Symlinks are not allowed" in str(exc_info.value)
+
 
 class TestGuardCommandInjection:
     """Tests for guard_command_injection function."""
@@ -82,25 +98,35 @@ class TestGuardCommandInjection:
             guard_command_injection([])
         assert "Empty command" in str(exc_info.value)
 
-    def test_semicolon_blocked(self) -> None:
-        """Test that semicolons are blocked."""
-        with pytest.raises(SecurityError):
-            guard_command_injection(["echo", "hello; rm -rf /"])
+    def test_semicolon_allowed(self) -> None:
+        """Test that semicolons are allowed (treated literally)."""
+        cmd = ["echo", "hello; rm -rf /"]
+        result = guard_command_injection(cmd)
+        assert result == cmd
 
-    def test_pipe_blocked(self) -> None:
-        """Test that pipe characters are blocked."""
-        with pytest.raises(SecurityError):
-            guard_command_injection(["cat", "file | rm -rf /"])
+    def test_pipe_allowed(self) -> None:
+        """Test that pipe characters are allowed (treated literally)."""
+        cmd = ["cat", "file | rm -rf /"]
+        result = guard_command_injection(cmd)
+        assert result == cmd
 
-    def test_backtick_blocked(self) -> None:
-        """Test that backticks are blocked."""
-        with pytest.raises(SecurityError):
-            guard_command_injection(["echo", "`whoami`"])
+    def test_backtick_allowed(self) -> None:
+        """Test that backticks are allowed (treated literally)."""
+        cmd = ["echo", "`whoami`"]
+        result = guard_command_injection(cmd)
+        assert result == cmd
 
-    def test_dollar_expansion_blocked(self) -> None:
-        """Test that dollar expansion is blocked."""
-        with pytest.raises(SecurityError):
-            guard_command_injection(["echo", "$(whoami)"])
+    def test_dollar_expansion_allowed(self) -> None:
+        """Test that dollar expansion is allowed (treated literally)."""
+        cmd = ["echo", "$(whoami)"]
+        result = guard_command_injection(cmd)
+        assert result == cmd
+
+    def test_null_byte_blocked(self) -> None:
+        """Test that null bytes are strictly blocked."""
+        with pytest.raises(SecurityError) as exc_info:
+            guard_command_injection(["echo", "hello\x00world"])
+        assert "null byte" in str(exc_info.value)
 
     def test_allowed_commands_whitelist(self) -> None:
         """Test command whitelist functionality."""
