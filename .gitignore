@@ -8,3 +8,8 @@ safe_workspace/
 .DS_Store
 .idea/
 .vscode/
+.coverage
+htmlcov/
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
