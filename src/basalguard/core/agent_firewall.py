@@ -52,10 +52,15 @@ logger = logging.getLogger("basalguard.firewall")
 DEFAULT_COMMAND_ALLOWLIST: frozenset[str] = frozenset(
     {
         "git",
+        "git.exe",
         "python",
+        "python.exe",
         "python3",
+        "python3.exe",
         "pip",
+        "pip.exe",
         "pip3",
+        "pip3.exe",
         "ls",
         "cat",
         "echo",
