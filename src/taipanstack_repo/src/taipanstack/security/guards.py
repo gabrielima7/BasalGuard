@@ -186,9 +186,11 @@ def guard_command_injection(
         base_command = cmd_list[0]
         # Get just the command name without path
         command_name = Path(base_command).name
+        # Check against allowed commands (case-insensitive for robustness on Windows)
+        allowed_set = {cmd.lower() for cmd in allowed_commands}
         cmd_not_allowed = (
-            command_name not in allowed_commands
-            and base_command not in allowed_commands
+            command_name.lower() not in allowed_set
+            and base_command.lower() not in allowed_set
         )
         if cmd_not_allowed:
             raise SecurityError(
