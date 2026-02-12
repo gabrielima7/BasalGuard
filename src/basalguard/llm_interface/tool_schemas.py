@@ -195,18 +195,15 @@ SEARCH_IN_FILE_SCHEMA: dict[str, Any] = {
         "parameters": {
             "type": "object",
             "properties": {
-                "path": {
-                    "type": "string",
-                    "description": "Relative path to the file."
-                },
+                "path": {"type": "string", "description": "Relative path to the file."},
                 "pattern": {
                     "type": "string",
-                    "description": "The text pattern to search for."
+                    "description": "The text pattern to search for.",
                 },
                 "case_sensitive": {
                     "type": "boolean",
-                    "description": "Whether to perform case-sensitive search. Default false."
-                }
+                    "description": "Whether to perform case-sensitive search. Default false.",
+                },
             },
             "required": ["path", "pattern"],
             "additionalProperties": False,
@@ -230,18 +227,15 @@ READ_FILE_PAGED_SCHEMA: dict[str, Any] = {
         "parameters": {
             "type": "object",
             "properties": {
-                "path": {
-                    "type": "string",
-                    "description": "Relative path to the file."
-                },
+                "path": {"type": "string", "description": "Relative path to the file."},
                 "offset": {
                     "type": "integer",
-                    "description": "Byte offset to start reading from. Default 0."
+                    "description": "Byte offset to start reading from. Default 0.",
                 },
                 "limit": {
                     "type": "integer",
-                    "description": "Maximum number of bytes to read. Default 2000."
-                }
+                    "description": "Maximum number of bytes to read. Default 2000.",
+                },
             },
             "required": ["path"],
             "additionalProperties": False,
