@@ -522,17 +522,19 @@ class BasalGuardCore:
             if not isinstance(path, str) or not isinstance(pattern, str):
                 return {
                     "status": "error",
-                    "reason": "Action 'search_in_file' requires string 'path' and 'pattern' parameters."
+                    "reason": "Action 'search_in_file' requires string 'path' and 'pattern' parameters.",
                 }
             case_sensitive = params.get("case_sensitive", False)
-            return self.safe_search_in_file(path, pattern, case_sensitive=bool(case_sensitive))
+            return self.safe_search_in_file(
+                path, pattern, case_sensitive=bool(case_sensitive)
+            )
 
         if action == "read_file_paged":
             path = params.get("path")
             if not isinstance(path, str):
                 return {
                     "status": "error",
-                    "reason": "Action 'read_file_paged' requires string 'path' parameter."
+                    "reason": "Action 'read_file_paged' requires string 'path' parameter.",
                 }
             offset = params.get("offset", 0)
             limit = params.get("limit", 2000)

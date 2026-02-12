@@ -30,6 +30,7 @@ class NetworkSecurityError(SecurityError):
     """Deprecated: Use SecurityError instead.
     Raised when a URL points to a blocked network destination.
     """
+
     def __init__(self, message: str) -> None:
         super().__init__(message, guard_name="network_guard")
 
@@ -77,7 +78,7 @@ def validate_url(
         raise SecurityError(
             f"Blocked scheme '{parsed.scheme}'. Allowed: {sorted(_ALLOWED_SCHEMES)}",
             guard_name="network_guard",
-            value=parsed.scheme
+            value=parsed.scheme,
         )
 
     hostname = parsed.hostname
@@ -93,7 +94,7 @@ def validate_url(
             raise SecurityError(
                 f"Domain '{hostname}' not in allowed list: {normalised}",
                 guard_name="network_guard",
-                value=hostname
+                value=hostname,
             )
 
     # ── 3. Check if hostname is already a raw IP ─────────────────────
@@ -103,7 +104,7 @@ def validate_url(
             raise SecurityError(
                 f"Blocked private/reserved IP: {addr}",
                 guard_name="network_guard",
-                value=str(addr)
+                value=str(addr),
             )
         logger.debug("URL %s points to public IP %s — allowed", url, addr)
         return url
@@ -117,14 +118,14 @@ def validate_url(
         raise SecurityError(
             f"DNS resolution failed for '{hostname}': {exc}",
             guard_name="network_guard",
-            value=hostname
+            value=hostname,
         ) from exc
 
     if not infos:
         raise SecurityError(
             f"DNS returned no results for '{hostname}'",
             guard_name="network_guard",
-            value=hostname
+            value=hostname,
         )
 
     for family, _type, _proto, _canonname, sockaddr in infos:
@@ -139,7 +140,7 @@ def validate_url(
                 f"Domain '{hostname}' resolves to private/reserved IP "
                 f"{addr} — SSRF blocked",
                 guard_name="network_guard",
-                value=str(addr)
+                value=str(addr),
             )
 
     logger.debug("URL %s validated — all IPs public", url)
