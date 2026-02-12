@@ -16,7 +16,7 @@ RUN pip install --no-cache-dir poetry==2.3.2 && \
 COPY pyproject.toml poetry.lock ./
 
 # Install runtime dependencies only (no dev)
-RUN poetry install --only main --no-interaction --no-ansi
+RUN poetry install --only main --no-interaction --no-ansi --no-root
 
 # ── Runtime stage ────────────────────────────────────────────────────
 FROM python:3.12-slim

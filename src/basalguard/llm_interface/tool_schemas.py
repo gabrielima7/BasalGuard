@@ -179,6 +179,76 @@ WEB_REQUEST_SCHEMA: dict[str, Any] = {
     },
 }
 
+# ── Tool: search_in_file ─────────────────────────────────────────────
+
+SEARCH_IN_FILE_SCHEMA: dict[str, Any] = {
+    "type": "function",
+    "function": {
+        "name": "search_in_file",
+        "description": (
+            "Search for a text pattern in a file (grep replacement). "
+            "Reads the file line by line to support large files. "
+            "Path traversal attempts are BLOCKED.\n\n"
+            "WHEN TO USE: When you need to find specific strings, definitions, "
+            "or TODOs in a file without reading the whole file."
+        ),
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "path": {
+                    "type": "string",
+                    "description": "Relative path to the file."
+                },
+                "pattern": {
+                    "type": "string",
+                    "description": "The text pattern to search for."
+                },
+                "case_sensitive": {
+                    "type": "boolean",
+                    "description": "Whether to perform case-sensitive search. Default false."
+                }
+            },
+            "required": ["path", "pattern"],
+            "additionalProperties": False,
+        },
+    },
+}
+
+# ── Tool: read_file_paged ────────────────────────────────────────────
+
+READ_FILE_PAGED_SCHEMA: dict[str, Any] = {
+    "type": "function",
+    "function": {
+        "name": "read_file_paged",
+        "description": (
+            "Read a specific chunk of a file (pagination). "
+            "Useful for reading large files (>1MB) without exceeding memory limits. "
+            "Reads bytes and decodes with replacement for invalid chars.\n\n"
+            "WHEN TO USE: When 'read_file' fails due to size limits, or when "
+            "you only need to read a specific part of a file."
+        ),
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "path": {
+                    "type": "string",
+                    "description": "Relative path to the file."
+                },
+                "offset": {
+                    "type": "integer",
+                    "description": "Byte offset to start reading from. Default 0."
+                },
+                "limit": {
+                    "type": "integer",
+                    "description": "Maximum number of bytes to read. Default 2000."
+                }
+            },
+            "required": ["path"],
+            "additionalProperties": False,
+        },
+    },
+}
+
 # ── Exported list ────────────────────────────────────────────────────
 
 BASALGUARD_TOOLS: list[dict[str, Any]] = [
@@ -186,5 +256,7 @@ BASALGUARD_TOOLS: list[dict[str, Any]] = [
     READ_FILE_SCHEMA,
     RUN_COMMAND_SCHEMA,
     WEB_REQUEST_SCHEMA,
+    SEARCH_IN_FILE_SCHEMA,
+    READ_FILE_PAGED_SCHEMA,
 ]
 """All BasalGuard tool schemas, ready for ``tools=`` in an API call."""
