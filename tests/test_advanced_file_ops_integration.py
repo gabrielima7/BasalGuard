@@ -15,7 +15,7 @@ def firewall(workspace: Path) -> BasalGuardCore:
     return BasalGuardCore(workspace)
 
 
-def test_file_ops_integration(firewall: BasalGuardCore, workspace: Path):
+def test_file_ops_integration(firewall: BasalGuardCore, workspace: Path) -> None:
     test_file = workspace / "test.txt"
     test_file.write_text(
         "Hello World\nThis is a test file.\nSecret: 12345\nEnd.", encoding="utf-8"
@@ -51,7 +51,7 @@ def test_file_ops_integration(firewall: BasalGuardCore, workspace: Path):
     assert len(result["content"]) == len(test_file.read_text())
 
 
-def test_search_in_file_blocked(firewall: BasalGuardCore):
+def test_search_in_file_blocked(firewall: BasalGuardCore) -> None:
     # Test path traversal
     result = firewall.validate_intent(
         "search_in_file", {"path": "../../etc/passwd", "pattern": "root"}
@@ -60,7 +60,7 @@ def test_search_in_file_blocked(firewall: BasalGuardCore):
     assert "path_traversal" in str(result.get("reason", ""))
 
 
-def test_read_file_paged_blocked(firewall: BasalGuardCore):
+def test_read_file_paged_blocked(firewall: BasalGuardCore) -> None:
     # Test path traversal
     result = firewall.validate_intent(
         "read_file_paged", {"path": "../../etc/passwd", "offset": 0}
