@@ -42,14 +42,17 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Install Ruff
-        run: pip install ruff
+      - name: Install Poetry
+        run: pipx install poetry
+
+      - name: Install dependencies
+        run: poetry install
 
       - name: Run Ruff Check
-        run: ruff check src/ tests/
+        run: poetry run ruff check src/ tests/
 
       - name: Run Ruff Format Check
-        run: ruff format --check src/ tests/
+        run: poetry run ruff format --check src/ tests/
 
   security:
     name: Security Scan (Bandit)
@@ -60,8 +63,11 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Install Bandit
-        run: pip install bandit
+      - name: Install Poetry
+        run: pipx install poetry
+
+      - name: Install dependencies
+        run: poetry install
 
       - name: Run Bandit
-        run: bandit -r src/ -ll
+        run: poetry run bandit -r src/ -ll
