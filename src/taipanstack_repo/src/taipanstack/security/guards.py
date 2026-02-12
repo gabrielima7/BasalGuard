@@ -112,7 +112,10 @@ def guard_path_traversal(
 
     # Check for symlinks if not allowed (check BEFORE resolution too)
     if not allow_symlinks:
-        if path.is_symlink():
+        # Construct full path to check if it is a symlink.
+        # If path is relative, it is relative to base_dir, not CWD.
+        check_path = path if path.is_absolute() else base_dir / path
+        if check_path.is_symlink():
             raise SecurityError(
                 "Symlinks are not allowed",
                 guard_name="path_traversal",

@@ -115,10 +115,17 @@ class TestRunSafeCommand:
         with pytest.raises(SecurityError, match="Empty command"):
             run_safe_command([])
 
-    def test_command_injection_blocked(self) -> None:
-        """Test that shell metacharacters are blocked."""
+    def test_command_injection_allowed_literal(self) -> None:
+        """Test that shell metacharacters are treated as literal args."""
+        # shell=False means this echoes "hello; rm -rf /" literally
+        result = run_safe_command(["echo", "hello; rm -rf /"])
+        assert result.success is True
+        assert "hello; rm -rf /" in result.stdout
+
+    def test_null_byte_blocked(self) -> None:
+        """Test that null bytes are strictly blocked."""
         with pytest.raises(SecurityError, match="Dangerous"):
-            run_safe_command(["echo", "hello; rm -rf /"])
+            run_safe_command(["echo", "hello\x00world"])
 
     def test_command_not_found(self) -> None:
         """Test that non-existent command raises SecurityError."""
