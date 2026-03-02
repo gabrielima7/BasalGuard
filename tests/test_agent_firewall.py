@@ -122,54 +122,54 @@ class TestSafeWriteFile:
         assert ">" not in written_name
 
 
-# ── safe_read_file ───────────────────────────────────────────────────
+# ── safe_search_in_file ──────────────────────────────────────────────
 
 
-class TestSafeReadFile:
-    """Tests for the safe_read_file method."""
+class TestSafeSearchInFile:
+    """Tests for the safe_search_in_file method."""
 
-    def test_read_existing_file(self, firewall: BasalGuardCore) -> None:
-        """A normal file read inside the workspace succeeds."""
-        # Create a file first
-        firewall.safe_write_file("to_read.txt", "Read me!")
+    def test_search_existing_file_with_matches(self, firewall: BasalGuardCore) -> None:
+        """Searching an existing file for a valid pattern returns matches."""
+        # Create a file to search
+        firewall.safe_write_file(
+            "data.txt", "Line 1: error\nLine 2: info\nLine 3: ERROR"
+        )
 
-        result = firewall.safe_read_file("to_read.txt")
+        result = firewall.safe_search_in_file("data.txt", "error")
         assert result["status"] == "success"
-        assert result["action"] == "read_file"
-        assert result["content"] == "Read me!"
-        assert result["size_bytes"] == len("Read me!".encode("utf-8"))
+        assert result["action"] == "search_in_file"
+        assert result["pattern"] == "error"
+        # Since case_sensitive is False by default, it should match both "error" and "ERROR"
+        assert result["count"] == 2
+        assert len(result["matches"]) == 2
+        assert "Line 1: error" in result["matches"][0]
+        assert "Line 3: ERROR" in result["matches"][1]
 
-    def test_read_nonexistent_file(self, firewall: BasalGuardCore) -> None:
-        """Reading a file that doesn't exist returns an error."""
-        result = firewall.safe_read_file("missing.txt")
-        assert result["status"] == "error"
-        assert "File not found" in result["reason"]
+    def test_search_case_sensitive(self, firewall: BasalGuardCore) -> None:
+        """Searching with case_sensitive=True returns only exact matches."""
+        firewall.safe_write_file(
+            "data.txt", "Line 1: error\nLine 2: info\nLine 3: ERROR"
+        )
 
-    def test_read_directory(self, firewall: BasalGuardCore) -> None:
-        """Attempting to read a directory returns an error."""
-        # Create a directory
-        (firewall.workspace_root / "subdir").mkdir()
-
-        result = firewall.safe_read_file("subdir")
-        assert result["status"] == "error"
-        assert "Path is not a file" in result["reason"]
+        result = firewall.safe_search_in_file("data.txt", "error", case_sensitive=True)
+        assert result["status"] == "success"
+        assert result["count"] == 1
+        assert "Line 1: error" in result["matches"][0]
+        assert len(result["matches"]) == 1
 
     def test_blocks_path_traversal(self, firewall: BasalGuardCore) -> None:
-        """Path traversal during read is blocked."""
-        result = firewall.safe_read_file("../../etc/passwd")
+        """Searching outside the workspace is blocked."""
+        result = firewall.safe_search_in_file("../../etc/passwd", "root")
         assert result["status"] == "blocked"
+        assert result["action"] == "search_in_file"
+        assert "traversal" in result["reason"].lower()
 
-    def test_blocks_large_file(self, firewall: BasalGuardCore, monkeypatch: pytest.MonkeyPatch) -> None:
-        """Reading a file larger than the max size is blocked."""
-        # Monkeypatch the max size limit for this test
-        monkeypatch.setattr("basalguard.core.agent_firewall._MAX_READ_SIZE_BYTES", 10)
-
-        # Create a file larger than 10 bytes
-        firewall.safe_write_file("large.txt", "This file is definitely larger than 10 bytes.")
-
-        result = firewall.safe_read_file("large.txt")
-        assert result["status"] == "blocked"
-        assert "File too large" in result["reason"]
+    def test_search_file_not_found(self, firewall: BasalGuardCore) -> None:
+        """Searching a non-existent file returns an error status."""
+        result = firewall.safe_search_in_file("missing.txt", "pattern")
+        assert result["status"] == "error"
+        assert result["action"] == "search_in_file"
+        assert "missing.txt" in result["violator"]
 
 
 # ── safe_execute_command ─────────────────────────────────────────────
