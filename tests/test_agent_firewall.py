@@ -120,6 +120,56 @@ class TestSafeWriteFile:
         assert ">" not in written_name
 
 
+# ── safe_search_in_file ──────────────────────────────────────────────
+
+
+class TestSafeSearchInFile:
+    """Tests for the safe_search_in_file method."""
+
+    def test_search_existing_file_with_matches(self, firewall: BasalGuardCore) -> None:
+        """Searching an existing file for a valid pattern returns matches."""
+        # Create a file to search
+        firewall.safe_write_file(
+            "data.txt", "Line 1: error\nLine 2: info\nLine 3: ERROR"
+        )
+
+        result = firewall.safe_search_in_file("data.txt", "error")
+        assert result["status"] == "success"
+        assert result["action"] == "search_in_file"
+        assert result["pattern"] == "error"
+        # Since case_sensitive is False by default, it should match both "error" and "ERROR"
+        assert result["count"] == 2
+        assert len(result["matches"]) == 2
+        assert "Line 1: error" in result["matches"][0]
+        assert "Line 3: ERROR" in result["matches"][1]
+
+    def test_search_case_sensitive(self, firewall: BasalGuardCore) -> None:
+        """Searching with case_sensitive=True returns only exact matches."""
+        firewall.safe_write_file(
+            "data.txt", "Line 1: error\nLine 2: info\nLine 3: ERROR"
+        )
+
+        result = firewall.safe_search_in_file("data.txt", "error", case_sensitive=True)
+        assert result["status"] == "success"
+        assert result["count"] == 1
+        assert "Line 1: error" in result["matches"][0]
+        assert len(result["matches"]) == 1
+
+    def test_blocks_path_traversal(self, firewall: BasalGuardCore) -> None:
+        """Searching outside the workspace is blocked."""
+        result = firewall.safe_search_in_file("../../etc/passwd", "root")
+        assert result["status"] == "blocked"
+        assert result["action"] == "search_in_file"
+        assert "traversal" in result["reason"].lower()
+
+    def test_search_file_not_found(self, firewall: BasalGuardCore) -> None:
+        """Searching a non-existent file returns an error status."""
+        result = firewall.safe_search_in_file("missing.txt", "pattern")
+        assert result["status"] == "error"
+        assert result["action"] == "search_in_file"
+        assert "missing.txt" in result["violator"]
+
+
 # ── safe_execute_command ─────────────────────────────────────────────
 
 
