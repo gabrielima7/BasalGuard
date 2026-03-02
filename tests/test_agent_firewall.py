@@ -14,7 +14,9 @@ from __future__ import annotations
 
 import sys
 from pathlib import Path
+from unittest.mock import MagicMock, patch
 
+import httpx
 import pytest
 
 from basalguard.core.agent_firewall import (
@@ -182,6 +184,67 @@ class TestSafeExecuteCommand:
         assert "hello from basalguard" in result["stdout"]
 
 
+# ── safe_web_request ─────────────────────────────────────────────────
+
+
+class TestSafeWebRequest:
+    """Tests for the safe_web_request method."""
+
+    @patch("httpx.Client.request")
+    def test_successful_get_request(
+        self, mock_request: MagicMock, firewall: BasalGuardCore
+    ) -> None:
+        """A successful GET request returns content."""
+        mock_response = MagicMock()
+        mock_response.status_code = 200
+        mock_response.text = "Hello from the web"
+        mock_request.return_value = mock_response
+
+        result = firewall.safe_web_request("http://example.com")
+        assert result["status"] == "success"
+        assert result["action"] == "web_request"
+        assert result["status_code"] == 200
+        assert result["content"] == "Hello from the web"
+        assert result["url"] == "http://example.com"
+        assert result["method"] == "GET"
+
+    def test_unsupported_method(self, firewall: BasalGuardCore) -> None:
+        """Only GET and HEAD are allowed."""
+        result = firewall.safe_web_request("http://example.com", method="POST")
+        assert result["status"] == "blocked"
+        assert "not allowed" in result["reason"]
+
+    def test_blocked_url(self, firewall: BasalGuardCore) -> None:
+        """Private IPs are blocked by validate_url."""
+        result = firewall.safe_web_request("http://127.0.0.1")
+        assert result["status"] == "blocked"
+        assert result["violator"] == "http://127.0.0.1"
+
+    @patch("httpx.Client.request")
+    def test_timeout_exception(
+        self, mock_request: MagicMock, firewall: BasalGuardCore
+    ) -> None:
+        """httpx.TimeoutException is caught and returned as error."""
+        mock_request.side_effect = httpx.TimeoutException("timeout")
+
+        result = firewall.safe_web_request("http://example.com")
+        assert result["status"] == "error"
+        assert "timed out" in result["reason"]
+        assert result["violator"] == "http://example.com"
+
+    @patch("httpx.Client.request")
+    def test_http_error_exception(
+        self, mock_request: MagicMock, firewall: BasalGuardCore
+    ) -> None:
+        """httpx.HTTPError is caught and returned as error."""
+        mock_request.side_effect = httpx.HTTPError("Some HTTP error")
+
+        result = firewall.safe_web_request("http://example.com")
+        assert result["status"] == "error"
+        assert "HTTP error" in result["reason"]
+        assert result["violator"] == "http://example.com"
+
+
 # ── validate_intent ──────────────────────────────────────────────────
 
 
@@ -251,6 +314,27 @@ class TestValidateIntent:
         )
         assert result["status"] == "success"
         assert "&& rm -rf /" in result["stdout"]
+
+    @patch.object(BasalGuardCore, "safe_web_request")
+    def test_routes_web_request(
+        self, mock_safe_web_request: MagicMock, firewall: BasalGuardCore
+    ) -> None:
+        """'web_request' action is dispatched to safe_web_request."""
+        mock_safe_web_request.return_value = {"status": "success"}
+        result = firewall.validate_intent(
+            "web_request",
+            {"url": "http://example.com"},
+        )
+        assert result["status"] == "success"
+        mock_safe_web_request.assert_called_once_with(
+            "http://example.com", method="GET"
+        )
+
+    def test_missing_url_param(self, firewall: BasalGuardCore) -> None:
+        """'web_request' without 'url' returns an error."""
+        result = firewall.validate_intent("web_request", {"method": "GET"})
+        assert result["status"] == "error"
+        assert "url" in result["reason"].lower()
 
 
 # ── validate_project_name (bonus) ────────────────────────────────────
