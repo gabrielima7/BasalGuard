@@ -89,10 +89,10 @@ def validate_url(
 
     # ── 2. Domain allowlist (optional) ───────────────────────────────
     if allowed_domains is not None:
-        normalised = [d.lower().strip() for d in allowed_domains]
+        normalised = {d.lower().strip() for d in allowed_domains}
         if hostname.lower() not in normalised:
             raise SecurityError(
-                f"Domain '{hostname}' not in allowed list: {normalised}",
+                f"Domain '{hostname}' not in allowed list: {sorted(normalised)}",
                 guard_name="network_guard",
                 value=hostname,
             )
