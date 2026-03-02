@@ -161,8 +161,22 @@ class TestSafeWebRequest:
         assert result["status"] == "error"
         assert "url" in result["reason"].lower()
 
-    def test_public_url_success(self, firewall: BasalGuardCore) -> None:
-        """A public URL should succeed (actual HTTP call to example.com)."""
+    def test_public_url_success(self, firewall: BasalGuardCore, monkeypatch: pytest.MonkeyPatch) -> None:
+        """A public URL should succeed (mocked HTTP call)."""
+        import httpx
+        class MockResponse:
+            status_code = 200
+            text = "Example Domain"
+        class MockClient:
+            def __init__(self, **kwargs):
+                pass
+            def __enter__(self):
+                return self
+            def __exit__(self, exc_type, exc_val, exc_tb):
+                pass
+            def request(self, method, url, **kwargs):
+                return MockResponse()
+        monkeypatch.setattr(httpx, "Client", MockClient)
         result = firewall.safe_web_request("https://www.example.com/")
         assert result["status"] == "success"
         assert result["status_code"] == 200
