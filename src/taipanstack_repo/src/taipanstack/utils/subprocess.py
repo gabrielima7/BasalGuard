@@ -152,9 +152,9 @@ def run_safe_command(
 
     # Get command whitelist
     if allowed_commands is not None:
-        whitelist = list(allowed_commands)
+        whitelist = allowed_commands
     else:
-        whitelist = list(DEFAULT_ALLOWED_COMMANDS)
+        whitelist = DEFAULT_ALLOWED_COMMANDS
 
     # Validate command against guards
     validated_cmd = guard_command_injection(cmd_list, allowed_commands=whitelist)
