@@ -5,7 +5,9 @@ This module demonstrates a secure implementation of a user management service
 following strict typing and security guidelines.
 """
 
+import hashlib
 import logging
+import secrets
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from uuid import UUID, uuid4
@@ -70,6 +72,7 @@ class User(BaseModel):
     id: UUID
     username: str
     email: EmailStr
+    hashed_password: str
     is_active: bool = True
 
     model_config = ConfigDict(frozen=True)
@@ -157,15 +160,24 @@ class UserService:
             Ok(User) on success, Err(UserCreationError) on failure.
 
         """
-        # In a real system, we would hash the password here.
-        # Since strict typing forbids unused variables, we explicitly acknowledge it.
-        _ = user_create.password
+        # Securely hash the password using pbkdf2_hmac with a random salt
+        password_bytes = user_create.password.get_secret_value().encode("utf-8")
+        salt = secrets.token_bytes(16)
+        hashed_password_bytes = hashlib.pbkdf2_hmac(
+            "sha256",
+            password_bytes,
+            salt,
+            100_000,
+        )
+        # Store the salt and hashed password together
+        hashed_password = f"{salt.hex()}:{hashed_password_bytes.hex()}"
 
         user_id = uuid4()
         user = User(
             id=user_id,
             username=user_create.username,
             email=user_create.email,
+            hashed_password=hashed_password,
             is_active=True,
         )
         try:
