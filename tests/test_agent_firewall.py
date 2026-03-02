@@ -120,6 +120,124 @@ class TestSafeWriteFile:
         assert ">" not in written_name
 
 
+# ── safe_read_file ───────────────────────────────────────────────────
+
+
+class TestSafeReadFile:
+    """Tests for the safe_read_file method."""
+
+    def test_read_simple_file(self, firewall: BasalGuardCore) -> None:
+        """Reading a normal file inside the workspace succeeds."""
+        firewall.safe_write_file("read_test.txt", "Read this!")
+        result = firewall.safe_read_file("read_test.txt")
+        assert result["status"] == "success"
+        assert result["action"] == "read_file"
+        assert result["content"] == "Read this!"
+        assert result["size_bytes"] == len("Read this!")
+
+    def test_read_file_not_found(self, firewall: BasalGuardCore) -> None:
+        """Missing file returns an error status."""
+        result = firewall.safe_read_file("non_existent.txt")
+        assert result["status"] == "error"
+        assert "not found" in result["reason"].lower()
+
+    def test_read_directory_fails(self, firewall: BasalGuardCore, workspace: Path) -> None:
+        """Attempting to read a directory as a file returns an error."""
+        (workspace / "a_dir").mkdir()
+        result = firewall.safe_read_file("a_dir")
+        assert result["status"] == "error"
+        assert "not a file" in result["reason"].lower()
+
+    def test_read_file_too_large(self, firewall: BasalGuardCore, workspace: Path) -> None:
+        """Files exceeding _MAX_READ_SIZE_BYTES are blocked."""
+        # _MAX_READ_SIZE_BYTES is 1_048_576. Let's create a slightly larger file.
+        large_file = workspace / "large.bin"
+        large_file.write_bytes(b"x" * (1_048_576 + 1))
+
+        result = firewall.safe_read_file("large.bin")
+        assert result["status"] == "blocked"
+        assert "too large" in result["reason"].lower()
+
+    def test_read_blocks_traversal(self, firewall: BasalGuardCore) -> None:
+        """Path traversal for reading is blocked."""
+        result = firewall.safe_read_file("../../etc/passwd")
+        assert result["status"] == "blocked"
+        assert "violator" in result
+
+
+# ── safe_search_in_file ──────────────────────────────────────────────
+
+
+class TestSafeSearchInFile:
+    """Tests for the safe_search_in_file method."""
+
+    def test_search_success(self, firewall: BasalGuardCore) -> None:
+        """Case-insensitive search returns matching lines."""
+        content = "Line one\nLine two\nMATCH here\nMatch there"
+        firewall.safe_write_file("search_test.txt", content)
+
+        result = firewall.safe_search_in_file("search_test.txt", "match")
+        assert result["status"] == "success"
+        assert result["count"] == 2
+        assert "MATCH here" in result["matches"]
+        assert "Match there" in result["matches"]
+
+    def test_search_case_sensitive(self, firewall: BasalGuardCore) -> None:
+        """Case-sensitive search filters correctly."""
+        content = "Line one\nLine two\nMATCH here\nMatch there"
+        firewall.safe_write_file("search_test.txt", content)
+
+        result = firewall.safe_search_in_file("search_test.txt", "MATCH", case_sensitive=True)
+        assert result["status"] == "success"
+        assert result["count"] == 1
+        assert "MATCH here" in result["matches"]
+
+    def test_search_blocks_traversal(self, firewall: BasalGuardCore) -> None:
+        """Search is blocked for traversal attempts."""
+        result = firewall.safe_search_in_file("../../etc/passwd", "root")
+        assert result["status"] == "blocked"
+
+    def test_search_error_handling(self, firewall: BasalGuardCore) -> None:
+        """Non-existent file returns error status for search."""
+        result = firewall.safe_search_in_file("missing.txt", "anything")
+        assert result["status"] == "error"
+
+
+# ── safe_read_file_paged ─────────────────────────────────────────────
+
+
+class TestSafeReadFilePaged:
+    """Tests for the safe_read_file_paged method."""
+
+    def test_read_paged_success(self, firewall: BasalGuardCore) -> None:
+        """Reading a file with default pagination succeeds."""
+        content = "0123456789"
+        firewall.safe_write_file("paged.txt", content)
+
+        result = firewall.safe_read_file_paged("paged.txt")
+        assert result["status"] == "success"
+        assert result["content"] == content
+
+    def test_read_paged_with_offset_limit(self, firewall: BasalGuardCore) -> None:
+        """Reading with specific offset and limit works."""
+        content = "0123456789"
+        firewall.safe_write_file("paged.txt", content)
+
+        result = firewall.safe_read_file_paged("paged.txt", offset=2, limit=3)
+        assert result["status"] == "success"
+        assert result["content"] == "234"
+
+    def test_read_paged_blocks_traversal(self, firewall: BasalGuardCore) -> None:
+        """Paged read is blocked for traversal attempts."""
+        result = firewall.safe_read_file_paged("../../etc/passwd")
+        assert result["status"] == "blocked"
+
+    def test_read_paged_error_handling(self, firewall: BasalGuardCore) -> None:
+        """Non-existent file returns error status for paged read."""
+        result = firewall.safe_read_file_paged("missing.txt")
+        assert result["status"] == "error"
+
+
 # ── safe_execute_command ─────────────────────────────────────────────
 
 
@@ -206,6 +324,31 @@ class TestValidateIntent:
         )
         assert result["status"] == "success"
         assert "dispatched" in result["stdout"]
+
+    def test_routes_read_file(self, firewall: BasalGuardCore) -> None:
+        """'read_file' action is dispatched to safe_read_file."""
+        firewall.safe_write_file("intent_read.txt", "content")
+        result = firewall.validate_intent("read_file", {"path": "intent_read.txt"})
+        assert result["status"] == "success"
+        assert result["content"] == "content"
+
+    def test_routes_search_in_file(self, firewall: BasalGuardCore) -> None:
+        """'search_in_file' action is dispatched to safe_search_in_file."""
+        firewall.safe_write_file("intent_search.txt", "found it")
+        result = firewall.validate_intent(
+            "search_in_file", {"path": "intent_search.txt", "pattern": "found"}
+        )
+        assert result["status"] == "success"
+        assert result["count"] == 1
+
+    def test_routes_read_file_paged(self, firewall: BasalGuardCore) -> None:
+        """'read_file_paged' action is dispatched to safe_read_file_paged."""
+        firewall.safe_write_file("intent_paged.txt", "0123456789")
+        result = firewall.validate_intent(
+            "read_file_paged", {"path": "intent_paged.txt", "offset": 2, "limit": 3}
+        )
+        assert result["status"] == "success"
+        assert result["content"] == "234"
 
     def test_unknown_action(self, firewall: BasalGuardCore) -> None:
         """An unknown action returns an error dict."""
