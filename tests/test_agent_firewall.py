@@ -122,6 +122,56 @@ class TestSafeWriteFile:
         assert ">" not in written_name
 
 
+# ── safe_read_file ───────────────────────────────────────────────────
+
+
+class TestSafeReadFile:
+    """Tests for the safe_read_file method."""
+
+    def test_read_existing_file(self, firewall: BasalGuardCore) -> None:
+        """A normal file read inside the workspace succeeds."""
+        # Create a file first
+        firewall.safe_write_file("to_read.txt", "Read me!")
+
+        result = firewall.safe_read_file("to_read.txt")
+        assert result["status"] == "success"
+        assert result["action"] == "read_file"
+        assert result["content"] == "Read me!"
+        assert result["size_bytes"] == len("Read me!".encode("utf-8"))
+
+    def test_read_nonexistent_file(self, firewall: BasalGuardCore) -> None:
+        """Reading a file that doesn't exist returns an error."""
+        result = firewall.safe_read_file("missing.txt")
+        assert result["status"] == "error"
+        assert "File not found" in result["reason"]
+
+    def test_read_directory(self, firewall: BasalGuardCore) -> None:
+        """Attempting to read a directory returns an error."""
+        # Create a directory
+        (firewall.workspace_root / "subdir").mkdir()
+
+        result = firewall.safe_read_file("subdir")
+        assert result["status"] == "error"
+        assert "Path is not a file" in result["reason"]
+
+    def test_blocks_path_traversal(self, firewall: BasalGuardCore) -> None:
+        """Path traversal during read is blocked."""
+        result = firewall.safe_read_file("../../etc/passwd")
+        assert result["status"] == "blocked"
+
+    def test_blocks_large_file(self, firewall: BasalGuardCore, monkeypatch: pytest.MonkeyPatch) -> None:
+        """Reading a file larger than the max size is blocked."""
+        # Monkeypatch the max size limit for this test
+        monkeypatch.setattr("basalguard.core.agent_firewall._MAX_READ_SIZE_BYTES", 10)
+
+        # Create a file larger than 10 bytes
+        firewall.safe_write_file("large.txt", "This file is definitely larger than 10 bytes.")
+
+        result = firewall.safe_read_file("large.txt")
+        assert result["status"] == "blocked"
+        assert "File too large" in result["reason"]
+
+
 # ── safe_execute_command ─────────────────────────────────────────────
 
 
@@ -260,6 +310,17 @@ class TestValidateIntent:
         assert result["status"] == "success"
         assert result["action"] == "write_file"
 
+    def test_routes_read_file(self, firewall: BasalGuardCore) -> None:
+        """'read_file' action is dispatched to safe_read_file."""
+        firewall.safe_write_file("intent_read_test.txt", "read this via intent!")
+        result = firewall.validate_intent(
+            "read_file",
+            {"path": "intent_read_test.txt"},
+        )
+        assert result["status"] == "success"
+        assert result["action"] == "read_file"
+        assert result["content"] == "read this via intent!"
+
     def test_routes_execute_command(self, firewall: BasalGuardCore) -> None:
         """'execute_command' action is dispatched to safe_execute_command."""
         cmd = [sys.executable, "-c", "import sys; print(sys.argv[1])", "dispatched"]
@@ -276,9 +337,15 @@ class TestValidateIntent:
         assert result["status"] == "error"
         assert "Unknown action" in result["reason"]
 
-    def test_missing_path_param(self, firewall: BasalGuardCore) -> None:
+    def test_missing_path_param_write(self, firewall: BasalGuardCore) -> None:
         """'write_file' without 'path' returns an error."""
         result = firewall.validate_intent("write_file", {"content": "no path"})
+        assert result["status"] == "error"
+        assert "path" in result["reason"].lower()
+
+    def test_missing_path_param_read(self, firewall: BasalGuardCore) -> None:
+        """'read_file' without 'path' returns an error."""
+        result = firewall.validate_intent("read_file", {})
         assert result["status"] == "error"
         assert "path" in result["reason"].lower()
 
