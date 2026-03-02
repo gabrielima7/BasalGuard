@@ -27,7 +27,7 @@ for _p in (
         sys.path.insert(0, str(_p))
 
 try:
-    from openai import OpenAI, APIError
+    from openai import OpenAI
 except ImportError:
     print("❌ Erro: Biblioteca 'openai' não instalada.")
     print("Instale com: pip install openai")
@@ -35,9 +35,9 @@ except ImportError:
 
 
 # Imports do BasalGuard (TaipanStack)
-from basalguard.core.agent_firewall import BasalGuardCore
-from basalguard.llm_interface.executor import ToolExecutor
-from basalguard.llm_interface.tool_schemas import BASALGUARD_TOOLS
+from basalguard.core.agent_firewall import BasalGuardCore  # noqa: E402
+from basalguard.llm_interface.executor import ToolExecutor  # noqa: E402
+from basalguard.llm_interface.tool_schemas import BASALGUARD_TOOLS  # noqa: E402
 
 # Cores para o terminal
 GREEN = "\033[92m"
