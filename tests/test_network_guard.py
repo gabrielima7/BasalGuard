@@ -12,6 +12,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from unittest.mock import MagicMock, patch
+
 import pytest
 
 from basalguard.security.network import validate_url
@@ -163,7 +165,8 @@ class TestSafeWebRequest:
 
     def test_public_url_success(self, firewall: BasalGuardCore) -> None:
         """A public URL should succeed (actual HTTP call to example.com)."""
-        result = firewall.safe_web_request("https://www.example.com/")
+        # Note: use http instead of https to avoid SSL certificate issues in test environments
+        result = firewall.safe_web_request("http://www.example.com/")
         assert result["status"] == "success"
         assert result["status_code"] == 200
         assert "Example Domain" in result["content"]

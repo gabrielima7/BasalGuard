@@ -348,18 +348,30 @@ def get_file_hash(
     algorithm: str = "sha256",
     base_dir: Path | str | None = None,
 ) -> str:
-    """Get hash of a file.
+    """Get hash of a file using a secure algorithm.
 
     Args:
         path: Path to the file.
-        algorithm: Hash algorithm (sha256, md5, etc).
+        algorithm: Hash algorithm (sha256, sha512).
         base_dir: Base directory to constrain to.
 
     Returns:
         Hex digest of the file hash.
 
+    Raises:
+        SecurityError: If an insecure or unsupported algorithm is used.
+
     """
     path = Path(path)
+
+    # Validate algorithm
+    allowed_algorithms = {"sha256", "sha512", "sha3_256", "sha3_512"}
+    if algorithm.lower() not in allowed_algorithms:
+        raise SecurityError(
+            f"Insecure or unsupported hash algorithm: {algorithm}",
+            guard_name="file_hash",
+            value=algorithm,
+        )
 
     # Validate path
     if base_dir is not None:

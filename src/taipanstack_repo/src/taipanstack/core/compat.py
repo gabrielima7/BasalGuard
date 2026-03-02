@@ -21,7 +21,7 @@ try:
 except ImportError:
     from enum import Enum
 
-    class StrEnum(str, Enum):  # noqa: UP042
+    class StrEnum(str, Enum):
         """Backport of StrEnum for Python < 3.11."""
 
         def __str__(self) -> str:
