@@ -83,6 +83,3 @@ Once inside the interactive session:
 ## Security
 
 BasalGuard is designed to be **fail-secure**. If validation fails or an error occurs, the action is blocked by default.
-
----
-*Built with ❤️ by BasalGuard Team*
